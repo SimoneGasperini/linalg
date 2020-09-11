@@ -17,7 +17,10 @@ Vector::Vector (int s, double* arr) {
 
 Vector::Vector (const Vector& vec) {
     size = vec.size;
-    array = vec.array;
+    array = new double[size];
+    for (int i = 0; i < size; i++) {
+        array[i] = vec.array[i];
+    }
 }
 
 int Vector::GetSize () {return size;}
@@ -59,7 +62,10 @@ ostream& operator << (ostream& os, Vector& vec) {
 
 Vector& Vector::operator = (const Vector& vec) {
     size = vec.size;
-    array = vec.array;
+    array = new double[size];
+    for (int i = 0; i < size; i++) {
+        array[i] = vec.array[i];
+    }
     return *this;
 }
 

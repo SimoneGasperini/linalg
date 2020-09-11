@@ -3,8 +3,8 @@
 
 Polynomial::Polynomial (int k) {
     degree = k;
-    coefficients = new double[k+1];
-    for (int i = 0; i <= k; i++) {
+    coefficients = new double[degree+1];
+    for (int i = 0; i <= degree; i++) {
         coefficients[i] = 0;
     }
 }
@@ -16,7 +16,10 @@ Polynomial::Polynomial (int k, double *coeff) {
 
 Polynomial::Polynomial (const Polynomial& pol) {
     degree = pol.degree;
-    coefficients = pol.coefficients;
+    coefficients = new double[degree+1];
+    for (int i = 0; i <= degree; i++) {
+        coefficients[i] = pol.coefficients[i];
+    }
 }
 
 int Polynomial::GetDegree () {return degree;}
@@ -133,7 +136,10 @@ istream& operator >> (istream& is, Polynomial& pol) {
 
 Polynomial& Polynomial::operator = (const Polynomial& pol) {
     degree = pol.degree;
-    coefficients = pol.coefficients;
+    coefficients = new double[degree+1];
+    for (int i = 0; i <= degree; i++) {
+        coefficients[i] = pol.coefficients[i];
+    }
     return *this;
 }
 

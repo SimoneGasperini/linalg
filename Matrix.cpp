@@ -23,7 +23,13 @@ Matrix::Matrix (int m, int n, double** arr) {
 Matrix::Matrix (const Matrix& mat) {
     rows = mat.rows;
     cols = mat.cols;
-    matrix = mat.matrix;
+    matrix = new double*[rows];
+    for (int i = 0; i < rows; i++) {
+        matrix[i] = new double[cols];
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = mat.matrix[i][j];
+        }
+    }
 }
 
 int Matrix::GetRows () {return rows;}
@@ -442,7 +448,13 @@ istream& operator >> (istream& is, Matrix& mat) {
 Matrix& Matrix::operator = (const Matrix& mat) {
     rows = mat.rows;
     cols = mat.cols;
-    matrix = mat.matrix;
+    matrix = new double*[rows];
+    for (int i = 0; i < rows; i++) {
+        matrix[i] = new double[cols];
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = mat.matrix[i][j];
+        }
+    }
     return *this;
 }
 
