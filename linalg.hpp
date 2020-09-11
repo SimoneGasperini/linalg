@@ -53,6 +53,7 @@ class Matrix {
     int GetCols ();
     double GetElement (int, int);
     void SetElement (int, int, double);
+    double Norm(char p = '2');
     Matrix T ();
     Matrix I ();
     Matrix Triu ();

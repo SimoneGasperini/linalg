@@ -152,6 +152,40 @@ void Matrix::Approx () {
     }
 }
 
+double Matrix::Norm (char p) {
+    double result;
+    //maximum of the singular values
+    if (p == '2') {
+        int n = rows < cols ? rows : cols;
+        double* sigmas = SingularValues();
+        result = sigmas[0];
+        for (int i = 1; i < n; i++) {
+            if (sigmas[i] > result) {
+                result = sigmas[i];
+            }
+        }
+    }
+    //frobenius norm
+    if (p == 'f') {
+        result = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result += matrix[i][j]*matrix[i][j];
+            }
+        }
+    }
+    //nuclear norm (works fine only for positive semi-definite matrices)
+    if (p == 'n') {
+        result = 0;
+        int n = rows < cols ? rows : cols;
+        double* sigmas = SingularValues();
+        for (int i = 0; i < n; i++) {
+            result += sigmas[i];
+        }
+    }
+    return result;
+}
+
 Matrix Matrix::T () {
     Matrix trasp(cols, rows);
     for (int i = 0; i < trasp.rows; i++) {
