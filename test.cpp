@@ -15,7 +15,8 @@ main () {
     }
     Matrix rect (r, c, mat);
     cout << "\nRectangular matrix generated R =\n" << rect;
-    cout << "\nRank(R) = " << rect.Rank();
+    cout << "\nRank = " << rect.Rank();
+    cout << "\nFrobenius Norm = " << rect.Norm('f');
     double* svalues = rect.SingularValues();
     int n = rect.GetRows() < rect.GetCols() ? rect.GetRows() : rect.GetCols();
     Vector singvalues(n, svalues);
@@ -31,7 +32,6 @@ main () {
     }
     Matrix A (r, c, mat);
     cout << "\nSquare matrix generated A =\n" << A;
-    cout << "\nRank(A) = " << A.Rank();
 
     Matrix G = A.Gauss();
     cout << "\n\nUpper triangular matrix (Gauss algorithm) G =\n" << G;
@@ -44,6 +44,9 @@ main () {
     Matrix diag = A.Diag();
     Matrix S = triu + triuT - diag;
     cout << "\n\nSymmetric matrix (from the initial one) S =\n" << S;
+
+    double norm = S.Norm('f');
+    cout << "\nFrobenius Norm = " << norm;
 
     double tr = S.Trace();
     cout << "\nTrace = " << tr;
