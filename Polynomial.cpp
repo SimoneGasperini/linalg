@@ -11,7 +11,10 @@ Polynomial::Polynomial (int k) {
 
 Polynomial::Polynomial (int k, double *coeff) {
     degree = k;
-    coefficients = coeff;
+    coefficients = new double[degree+1];
+    for (int i = 0; i <= degree; i++) {
+        coefficients[i] = coeff[i];
+    }
 }
 
 Polynomial::Polynomial (const Polynomial& pol) {

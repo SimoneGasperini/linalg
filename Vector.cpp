@@ -12,7 +12,10 @@ Vector::Vector (int s) {
 
 Vector::Vector (int s, double* arr) {
     size = s;
-    array = arr;
+    array = new double[size];
+    for (int i = 0; i < size; i++) {
+        array[i] = arr[i];
+    }
 }
 
 Vector::Vector (const Vector& vec) {

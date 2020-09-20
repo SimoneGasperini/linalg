@@ -17,7 +17,13 @@ Matrix::Matrix (int m, int n) {
 Matrix::Matrix (int m, int n, double** arr) {
     rows = m;
     cols = n;
-    matrix = arr;
+    matrix = new double*[rows];
+    for (int i = 0; i < rows; i++) {
+        matrix[i] = new double[cols];
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = arr[i][j];
+        }
+    }
 }
 
 Matrix::Matrix (const Matrix& mat) {
