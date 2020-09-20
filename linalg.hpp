@@ -110,3 +110,4 @@ Vector Dot (Vector, Matrix);
 Matrix Outer (Vector, Vector);
 Vector Hadamard (Vector, Vector);
 Vector* GramSchmidt (Vector*, int, int p = 2);
+Vector Convolution (Vector, Vector);

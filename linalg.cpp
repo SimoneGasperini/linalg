@@ -95,3 +95,17 @@ Vector* GramSchmidt (Vector* vecs, int num, int p) {
     }
     return orthonormal;
 }
+
+Vector Convolution (Vector v1, Vector v2) {
+    int s1 = v1.GetSize();
+    int s2 = v2.GetSize();
+    int size = s1+s2-1;
+    double* arr = new double[size];
+    for (int i = 0; i < s1; i++) {
+        for(int j = 0; j < s2; j++) {
+            arr[i+j] += v1.GetElement(i) * v2.GetElement(j);
+        }
+    }
+    Vector result(size, arr);
+    return result;
+}

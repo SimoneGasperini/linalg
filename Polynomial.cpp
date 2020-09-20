@@ -171,12 +171,10 @@ Polynomial Polynomial::operator - (const Polynomial& pol) {
 }
 
 Polynomial Polynomial::operator * (const Polynomial& pol) {
-    Polynomial prod(degree + pol.degree);
-    for (int i = 0; i <= degree; i++) {     
-        for(int j = 0; j <= pol.degree; j++) {
-            prod.coefficients[i+j] += coefficients[i] * pol.coefficients[j]; 
-        }
-    }
+    Vector v1(degree+1, coefficients);
+    Vector v2(pol.degree+1, pol.coefficients);
+    Vector conv = Convolution(v1, v2);
+    Polynomial prod(degree+pol.degree, conv.GetArray());
     return prod;
 }
 
