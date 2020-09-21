@@ -105,3 +105,15 @@ Vector Vector::operator / (double k) {
     }
     return res;
 }
+
+bool Vector::operator == (const Vector& vec) {
+    if (size != vec.size) {return false;}
+    for (int i = 0; i < size; i++) {
+        if (abs(array[i] - vec.array[i]) > APPROX) {return false;}
+    }
+    return true;
+}
+
+bool Vector::operator != (const Vector& vec) {
+    return !(*this == vec);
+}

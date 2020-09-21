@@ -518,3 +518,18 @@ Matrix Matrix::operator / (double k) {
     }
     return res;
 }
+
+bool Matrix::operator == (const Matrix& mat) {
+    if (rows != mat.rows) {return false;}
+    if (cols != mat.cols) {return false;}
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (abs(matrix[i][j] - mat.matrix[i][j]) > APPROX) {return false;}
+        }
+    }
+    return true;
+}
+
+bool Matrix::operator != (const Matrix& mat) {
+    return !(*this == mat);
+}

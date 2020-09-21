@@ -75,6 +75,8 @@ class Matrix {
     Matrix operator * (const Matrix&);
     Matrix operator * (double);
     Matrix operator / (double);
+    bool operator == (const Matrix&);
+    bool operator != (const Matrix&);
 };
 
 class Vector {
@@ -101,6 +103,8 @@ class Vector {
     Vector operator - (const Vector&);
     Vector operator * (double);
     Vector operator / (double);
+    bool operator == (const Vector&);
+    bool operator != (const Vector&);
 };
 
 Matrix Eye(int);
