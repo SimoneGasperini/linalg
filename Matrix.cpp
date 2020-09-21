@@ -163,7 +163,7 @@ void Matrix::Approx () {
         }
     }
 }
-
+/*
 double Matrix::Norm (char p) {
     double result;
     //maximum of the singular values
@@ -197,7 +197,7 @@ double Matrix::Norm (char p) {
     }
     return result;
 }
-
+*/
 Matrix Matrix::T () {
     Matrix trasp(cols, rows);
     for (int i = 0; i < trasp.rows; i++) {
@@ -324,20 +324,26 @@ double Matrix::Determinant (char method) {
     return result;
 }
 
-double* Matrix::Eigenvalues () {
+Matrix* Matrix::Eigen () {
     //works fine only for symmetric matrices
-    double* lambdas = new double[cols];
-    Matrix mat = *this;
-    for (int iter = 0; iter < 1000; iter++) {
-        Matrix* QR = mat.QRdecomposition();
-        mat = QR[1] * QR[0];
+    Matrix Q = Eye(this->cols);
+    Matrix L = *this;
+    int i = 0;
+    int MAXITER = 10000;
+    while (L != L.Diag()) {
+        if (i > MAXITER) {
+            throw 1;
+        }
+        Matrix* QR = L.QRdecomposition();
+        Q = Q * QR[0];
+        L = QR[1] * QR[0];
+        i++;
     }
-    for (int i = 0; i < cols; i++) {
-        lambdas[i] = mat.matrix[i][i];
-    }
-    return lambdas;
+    Matrix* QL = new Matrix[2];
+    QL[0] = Q; QL[1] = L;
+    return QL;
 }
-
+/*
 double* Matrix::SingularValues () {
     //works fine apart from the sign ambiguity
     int n = rows < cols ? rows : cols;
@@ -348,7 +354,7 @@ double* Matrix::SingularValues () {
     }
     return sigmas;
 }
-
+*/
 Polynomial Matrix::CharacteristicPol () {
     auto Fattoriale = [] (int n) {
         int res = 1;

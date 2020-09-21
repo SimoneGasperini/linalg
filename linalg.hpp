@@ -62,7 +62,7 @@ class Matrix {
     int Rank();
     double Trace ();
     double Determinant (char method = 'g');
-    double* Eigenvalues();
+    Matrix* Eigen();
     double* SingularValues();
     Polynomial CharacteristicPol ();
     Matrix* QRdecomposition ();
