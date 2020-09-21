@@ -113,6 +113,7 @@ Matrix Eye(int);
 double Dot (Vector, Vector);
 Vector Dot (Matrix, Vector);
 Vector Dot (Vector, Matrix);
+Matrix Dot (Matrix, Matrix);
 Matrix Outer (Vector, Vector);
 Vector Hadamard (Vector, Vector);
 Vector* GramSchmidt (Vector*, int, int p = 2);

@@ -52,6 +52,11 @@ Vector Dot (Vector vec, Matrix mat) {
     return result;
 }
 
+Matrix Dot (Matrix m1, Matrix m2) {
+    Matrix result = m1 * m2;
+    return result;
+}
+
 Matrix Outer (Vector v1, Vector v2) {
     int s1 = v1.GetSize();
     int s2 = v2.GetSize();
