@@ -10,13 +10,7 @@ Matrix Eye (int n) {
 }
 
 double Dot (Vector v1, Vector v2) {
-    int s1 = v1.GetSize();
-    int s2 = v2.GetSize();
-    if (s1 != s2) {throw 5;}
-    double result = 0;
-    for (int i = 0; i < s1; i++) {
-        result += v1.GetElement(i) * v2.GetElement(i);
-    }
+    double result = v1 * v2;
     return result;
 }
 

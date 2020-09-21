@@ -103,6 +103,7 @@ class Vector {
     Vector& operator = (const Vector&);
     Vector operator + (const Vector&);
     Vector operator - (const Vector&);
+    double operator * (const Vector&);
     Vector operator * (double);
     Vector operator / (double);
     bool operator == (const Vector&);

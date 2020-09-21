@@ -99,6 +99,15 @@ Vector Vector::operator - (const Vector& vec) {
     return diff;
 }
 
+double Vector::operator * (const Vector& vec) {
+    if (size != vec.size) {throw 5;}
+    double result = 0;
+    for (int i = 0; i < size; i++) {
+        result += array[i] * vec.array[i];
+    }
+    return result;
+}
+
 Vector Vector::operator * (double k) {
     Vector res(size);
     for (int i = 0; i < size; i++) {
