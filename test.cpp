@@ -5,25 +5,8 @@ using namespace std;
 main () {
 
     srand((unsigned int)time(NULL));
-    int r = 12, c = 6;
+    int r = 5, c = 5;
     double** mat = new double*[r];
-    for (int i = 0; i < r; i++) {
-        mat[i] = new double[c];
-        for (int j = 0; j < c; j++) {
-            mat[i][j] = static_cast <double> (rand()) / static_cast <double> (RAND_MAX) * 4 - 2;
-        }
-    }
-    Matrix rect (r, c, mat);
-    cout << "\nRectangular matrix generated R =\n" << rect;
-    cout << "\nRank = " << rect.Rank();
-    cout << "\nFrobenius Norm = " << rect.Norm('f');
-    double* svalues = rect.SingularValues();
-    int n = rect.GetRows() < rect.GetCols() ? rect.GetRows() : rect.GetCols();
-    Vector singvalues(n, svalues);
-    cout << "\nSingular values = " << singvalues << "\n\n";
-
-    r = 5; c = 5;
-    mat = new double*[r];
     for (int i = 0; i < r; i++) {
         mat[i] = new double[c];
         for (int j = 0; j < c; j++) {
@@ -45,8 +28,10 @@ main () {
     Matrix S = triu + triuT - diag;
     cout << "\n\nSymmetric matrix (from the initial one) S =\n" << S;
 
+    /*
     double norm = S.Norm('f');
     cout << "\nFrobenius Norm = " << norm;
+    */
 
     double tr = S.Trace();
     cout << "\nTrace = " << tr;
@@ -54,13 +39,18 @@ main () {
     double det = S.Determinant();
     cout << "\nDeterminant = " << det;
 
-    double* ev = S.Eigenvalues();
-    Vector evals(S.GetCols(), ev);
-    cout << "\nEigenvalues = " << evals;
+    Matrix* QL = S.Eigen();
+    Matrix Q = QL[0], L = QL[1];
+    cout << "\nLambda =\n" << L;
+    Matrix S_again = Q * L * Q.T();
+    bool x = S_again == S;
+    cout << "\nS == Q*L*Q.T() --> " << x << "\n";
 
+    /*
     double* sv = S.SingularValues();
     Vector singvals(S.GetCols(), sv);
     cout << "\nSingular values = " << singvals << "\n";
+    */
 
     Polynomial charpol = S.CharacteristicPol ();
     cout << "Pol(S) = " << charpol << "\n\n";
