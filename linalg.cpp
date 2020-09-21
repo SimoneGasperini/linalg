@@ -109,3 +109,24 @@ Vector Convolution (Vector v1, Vector v2) {
     Vector result(size, arr);
     return result;
 }
+
+Matrix Convolution (Matrix m1, Matrix m2) {
+    int r1 = m1.GetRows(), c1 = m1.GetCols();
+    int r2 = m2.GetRows(), c2 = m2.GetCols();
+    int rows = r1+r2-1, cols = c1+c2-1;
+    double** arr = new double*[rows];
+    for (int i = 0; i < rows; i++) {
+        arr[i] = new double[cols];
+    }
+    for (int i1 = 0; i1 < r1; i1++) {
+        for (int j1 = 0; j1 < c1; j1++) {
+            for (int i2 = 0; i2 < r2; i2++) {
+                for (int j2 = 0; j2 < c2; j2++) { 
+                    arr[i1+i2][j1+j2] += m1.GetElement(i1,j1) * m2.GetElement(i2,j2);
+                }
+            }
+        }
+    }
+    Matrix result(rows, cols, arr);
+    return result;
+}
