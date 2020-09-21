@@ -83,6 +83,8 @@ class Vector {
     int size;
     double* array;
 
+    void Approx ();
+
     public:
     Vector () {};
     Vector (int);

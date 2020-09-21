@@ -34,6 +34,14 @@ double Vector::GetElement (int i) {return array[i];}
 
 void Vector::SetElement (int i, double val) {array[i] = val;}
 
+void Vector::Approx () {
+    for (int i = 0; i < size; i++) {
+        if (abs(array[i]) < APPROX) {
+            array[i] = 0;
+        }
+    }
+}
+
 double Vector::Norm (int p) {
     double result = 0;
     for (int i = 0; i < size; i++) {
@@ -55,6 +63,7 @@ Vector Vector::ProjectedOnto (Vector vec) {
 }
 
 ostream& operator << (ostream& os, Vector& vec) {
+    vec.Approx();
     os << "[";
     for (int i = 0; i < vec.size; i++) {
         os << setprecision(3) << vec.array[i];
