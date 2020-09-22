@@ -73,7 +73,7 @@ class Matrix {
 
     Matrix Merge (const Matrix&);
 	void SwapRows ();
-    void Approx ();
+    void Approx (double = 1);
 
     public:
     Matrix () {};
@@ -95,10 +95,11 @@ class Matrix {
     int Rank();
     double Trace ();
     double Determinant (char method = 'g');
-    Matrix* Eigen();
+    Matrix* Eigendecomposition();
     double* SingularValues();
     Polynomial CharacteristicPol ();
     Matrix* QRdecomposition ();
+    Matrix HouseholderReflection (int);
 
     friend ostream& operator << (ostream&, Matrix&);
     friend istream& operator >> (istream&, Matrix&);
@@ -120,5 +121,6 @@ Matrix Dot (Matrix, Matrix);
 Matrix Outer (Vector, Vector);
 Vector Hadamard (Vector, Vector);
 Vector* GramSchmidt (Vector*, int, int p = 2);
+double WilkinsonShift (Matrix);
 Vector Convolution (Vector, Vector);
 Matrix Convolution (Matrix, Matrix);

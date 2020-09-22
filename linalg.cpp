@@ -95,6 +95,17 @@ Vector* GramSchmidt (Vector* vecs, int num, int p) {
     return orthonormal;
 }
 
+double WilkinsonShift (Matrix mat) {
+    double a = mat.GetElement(mat.GetRows()-2, mat.GetCols()-2);
+    double b = mat.GetElement(mat.GetRows()-2, mat.GetCols()-1);
+    double c = mat.GetElement(mat.GetRows()-1, mat.GetCols()-1);
+    double delta = (a - c) * 0.5;
+    double sign = 1 ? delta > 0 : -1;
+    double denominator = abs(delta) + sqrt( pow(delta,2)+pow(b,2) );
+    double shift = c - ( (sign*pow(b,2)) / denominator );
+    return shift;
+}
+
 Vector Convolution (Vector v1, Vector v2) {
     int s1 = v1.GetSize();
     int s2 = v2.GetSize();
