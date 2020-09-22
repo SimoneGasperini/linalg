@@ -172,10 +172,10 @@ void Matrix::SwapRows () {
     }
 }
 
-void Matrix::Approx () {
+void Matrix::Approx (double factor) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (abs(matrix[i][j]) < APPROX) {
+            if (abs(matrix[i][j]) < factor*APPROX) {
                 matrix[i][j] = 0;
             }
         }
@@ -342,23 +342,23 @@ double Matrix::Determinant (char method) {
     return result;
 }
 
-Matrix* Matrix::Eigen () {
+Matrix* Matrix::Eigendecomposition () {
     //works fine only for symmetric matrices
+    if (rows != cols) {throw 2;}
     Matrix Q = Eye(this->cols);
-    Matrix L = *this;
-    int i = 0;
-    int MAXITER = 10000;
-    while (L != L.Diag()) {
-        if (i > MAXITER) {
-            throw 1;
-        }
-        Matrix* QR = L.QRdecomposition();
+    Matrix A = *this;
+    Matrix I = Eye(A.rows);
+    for (int iter = 0; iter < 1000; iter++) {
+        double shift = WilkinsonShift(A);
+        A = A - (I * shift);
+        Matrix* QR = A.QRdecomposition();
         Q = Q * QR[0];
-        L = QR[1] * QR[0];
-        i++;
+        A = (QR[1] * QR[0]) + (I * shift);
+        A.Approx();
     }
+    Q.Approx(1000);
     Matrix* QL = new Matrix[2];
-    QL[0] = Q; QL[1] = L;
+    QL[0] = Q; QL[1] = A.Diag();
     return QL;
 }
 /*
@@ -368,7 +368,7 @@ double* Matrix::SingularValues () {
     Matrix S = n == rows ? (*this)*this->T() : this->T()*(*this);
     double* sigmas = S.Eigenvalues();
     for (int i = 0; i < n; i++) {
-        sigmas[i] = pow(sigmas[i], 0.5);
+        sigmas[i] = sqrt(sigmas[i]);
     }
     return sigmas;
 }
@@ -405,38 +405,39 @@ Polynomial Matrix::CharacteristicPol () {
 }
 
 Matrix* Matrix::QRdecomposition () {
+    //works fine only for symmetric matrices
     if (rows != cols) {throw 2;}
+    Matrix Qt = Eye(rows), R = *this, H;
+    for (int i = 0; i < rows; i++) {
+        H = R.HouseholderReflection(i);
+        Qt = H * Qt;
+        R = H * R;
+    }
     Matrix* QR = new Matrix[2];
-    Vector* columns = new Vector[cols];
-    for (int i = 0; i < cols; i++) {
-        double* array = new double[rows];
-        for (int j = 0; j < rows; j++) {
-            array[j] = matrix[j][i];
-        }
-        columns[i] = Vector(rows, array);
+    QR[0] = Qt.T();
+    QR[1] = R;
+    return QR;
+}
+
+Matrix Matrix::HouseholderReflection(int i) {
+    Vector _x = GetColVector(i);
+    Vector x(rows-i);
+    for (int j = 0; j < rows-i; j++) {
+        x.SetElement(j, _x.GetElement(j+i));
     }
-    Vector* ortho = GramSchmidt(columns, cols);
-    double** q = new double*[rows];
-    for (int i = 0; i < rows; i++) {
-        q[i] = new double[cols];
-        for (int j = 0; j < cols; j++) {
-            q[i][j] = ortho[j].GetArray()[i];
-        }
-    }
-    QR[0] = Matrix(rows, cols, q);
-    double** r = new double*[rows];
-    for (int i = 0; i < rows; i++) {
-        r[i] = new double[cols];
-        for (int j = 0; j < cols; j++) {
-            if (i > j) {
-                r[i][j] = 0;
-            } else {
-                r[i][j] = Dot(ortho[i], columns[j]);
+    Vector xp = Eye(rows-i).GetColVector(0) * x.Norm();
+    Vector u = x - xp;
+    double dot = Dot(u,u);
+    Matrix H = Eye(rows);
+    if (dot != 0) {
+        Matrix _H = Eye(rows-i) - ( Outer(u,u) * (2./dot) );
+        for (int r = 0; r < _H.rows; r++) {
+            for (int c = 0; c < _H.cols; c++) {
+                H.matrix[r+i][c+i] = _H.matrix[r][c];
             }
         }
     }
-    QR[1] = Matrix(rows, cols, r);
-    return QR;
+    return H;
 }
 
 ostream& operator << (ostream& os, Matrix& mat) {
