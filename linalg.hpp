@@ -31,54 +31,6 @@ class Polynomial {
     Polynomial operator / (const Polynomial&);
 };
 
-class Matrix {
-    int rows, cols;
-    double** matrix;
-
-    bool IsContained (int, int*, int);
-    Matrix GetMatrix (int);
-    Matrix GetMatrix (int*, int);
-    Matrix GetCombs (int, int, int);
-
-    Matrix Merge (const Matrix&);
-	void SwapRows ();
-    void Approx ();
-
-    public:
-    Matrix () {};
-    Matrix (int, int);
-    Matrix (int, int, double**);
-    Matrix (const Matrix&);
-    int GetRows ();
-    int GetCols ();
-    double GetElement (int, int);
-    void SetElement (int, int, double);
-    double Norm(char p = '2');
-    Matrix T ();
-    Matrix I ();
-    Matrix Triu ();
-    Matrix Diag ();
-    Matrix Gauss ();
-    int Rank();
-    double Trace ();
-    double Determinant (char method = 'g');
-    Matrix* Eigen();
-    double* SingularValues();
-    Polynomial CharacteristicPol ();
-    Matrix* QRdecomposition ();
-
-    friend ostream& operator << (ostream&, Matrix&);
-    friend istream& operator >> (istream&, Matrix&);
-    Matrix& operator = (const Matrix&);
-    Matrix operator + (const Matrix&);
-    Matrix operator - (const Matrix&);
-    Matrix operator * (const Matrix&);
-    Matrix operator * (double);
-    Matrix operator / (double);
-    bool operator == (const Matrix&);
-    bool operator != (const Matrix&);
-};
-
 class Vector {
     int size;
     double* array;
@@ -108,6 +60,56 @@ class Vector {
     Vector operator / (double);
     bool operator == (const Vector&);
     bool operator != (const Vector&);
+};
+
+class Matrix {
+    int rows, cols;
+    double** matrix;
+
+    bool IsContained (int, int*, int);
+    Matrix GetMatrix (int);
+    Matrix GetMatrix (int*, int);
+    Matrix GetCombs (int, int, int);
+
+    Matrix Merge (const Matrix&);
+	void SwapRows ();
+    void Approx ();
+
+    public:
+    Matrix () {};
+    Matrix (int, int);
+    Matrix (int, int, double**);
+    Matrix (const Matrix&);
+    int GetRows ();
+    int GetCols ();
+    Vector GetRowVector(int);
+    Vector GetColVector(int);
+    double GetElement (int, int);
+    void SetElement (int, int, double);
+    double Norm(char p = '2');
+    Matrix T ();
+    Matrix I ();
+    Matrix Triu ();
+    Matrix Diag ();
+    Matrix Gauss ();
+    int Rank();
+    double Trace ();
+    double Determinant (char method = 'g');
+    Matrix* Eigen();
+    double* SingularValues();
+    Polynomial CharacteristicPol ();
+    Matrix* QRdecomposition ();
+
+    friend ostream& operator << (ostream&, Matrix&);
+    friend istream& operator >> (istream&, Matrix&);
+    Matrix& operator = (const Matrix&);
+    Matrix operator + (const Matrix&);
+    Matrix operator - (const Matrix&);
+    Matrix operator * (const Matrix&);
+    Matrix operator * (double);
+    Matrix operator / (double);
+    bool operator == (const Matrix&);
+    bool operator != (const Matrix&);
 };
 
 Matrix Eye(int);
