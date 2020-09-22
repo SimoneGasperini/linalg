@@ -3,9 +3,34 @@
 using namespace std;
 
 main () {
+/*
+    # symmetric matrix 4x4 with det=0
+    int r = 4, c = 4;
+    double** mat = new double*[r];
+    for (int i = 0; i < r; i++) {
+        mat[i] = new double[c];
+    }
+    mat[0][0] = 1;
+    mat[0][1] = -2;
+    mat[0][2] = 1;
+    mat[0][3] = 3;
+    mat[1][0] = -2;
+    mat[1][1] = 0;
+    mat[1][2] = 2;
+    mat[1][3] = -6;
+    mat[2][0] = 1;
+    mat[2][1] = 2;
+    mat[2][2] = -2;
+    mat[2][3] = 3;
+    mat[3][0] = 3;
+    mat[3][1] = -6;
+    mat[3][2] = 3;
+    mat[3][3] = 9;
+    Matrix S (r, c, mat);
+*/
 
     srand((unsigned int)time(NULL));
-    int r = 5, c = 5;
+    int r = 8, c = 8;
     double** mat = new double*[r];
     for (int i = 0; i < r; i++) {
         mat[i] = new double[c];
@@ -14,24 +39,15 @@ main () {
         }
     }
     Matrix A (r, c, mat);
-    cout << "\nSquare matrix generated A =\n" << A;
-
-    Matrix G = A.Gauss();
-    cout << "\n\nUpper triangular matrix (Gauss algorithm) G =\n" << G;
-
-    Matrix I = A.I();
-    cout << "\n\nInverse matrix I =\n" << I;
-
     Matrix triu = A.Triu();
     Matrix triuT = triu.T();
     Matrix diag = A.Diag();
     Matrix S = triu + triuT - diag;
-    cout << "\n\nSymmetric matrix (from the initial one) S =\n" << S;
 
-    /*
-    double norm = S.Norm('f');
-    cout << "\nFrobenius Norm = " << norm;
-    */
+    cout << "\nSymmetric matrix (from the initial one) S =\n" << S;
+
+    //double norm = S.Norm('f');
+    //cout << "\nFrobenius Norm = " << norm;
 
     double tr = S.Trace();
     cout << "\nTrace = " << tr;
@@ -39,20 +55,15 @@ main () {
     double det = S.Determinant();
     cout << "\nDeterminant = " << det;
 
-    Matrix* QL = S.Eigen();
+    Matrix* QL = S.Eigendecomposition();
     Matrix Q = QL[0], L = QL[1];
-    cout << "\nLambda =\n" << L;
+    cout << "\n\nQ =\n" << Q;
+    cout << "\nL =\n" << L;
     Matrix S_again = Q * L * Q.T();
-    bool x = S_again == S;
-    cout << "\nS == Q*L*Q.T() --> " << x << "\n";
+    cout << "\nQ * L * Qt =\n" << S_again;
 
-    /*
-    double* sv = S.SingularValues();
-    Vector singvals(S.GetCols(), sv);
-    cout << "\nSingular values = " << singvals << "\n";
-    */
-
-    Polynomial charpol = S.CharacteristicPol ();
-    cout << "Pol(S) = " << charpol << "\n\n";
+    //double* sv = S.SingularValues();
+    //Vector singvals(S.GetCols(), sv);
+    //cout << "\nSingular values = " << singvals << "\n";
 
 }
