@@ -343,7 +343,6 @@ double Matrix::Determinant (char method) {
 }
 
 Matrix* Matrix::Eigendecomposition () {
-    //works fine only for symmetric matrices
     if (rows != cols) {throw 2;}
     Matrix Q = Eye(this->cols);
     Matrix A = *this;
@@ -355,57 +354,42 @@ Matrix* Matrix::Eigendecomposition () {
         Q = Q * QR[0];
         A = (QR[1] * QR[0]) + (I * shift);
         A.Approx();
+        if (A == A.Triu()) break;
     }
     Q.Approx(1000);
     Matrix* QL = new Matrix[2];
     QL[0] = Q; QL[1] = A.Diag();
     return QL;
 }
-/*
-double* Matrix::SingularValues () {
-    //works fine apart from the sign ambiguity
-    int n = rows < cols ? rows : cols;
-    Matrix S = n == rows ? (*this)*this->T() : this->T()*(*this);
-    double* sigmas = S.Eigenvalues();
-    for (int i = 0; i < n; i++) {
-        sigmas[i] = sqrt(sigmas[i]);
-    }
-    return sigmas;
-}
-*/
-Polynomial Matrix::CharacteristicPol () {
-    auto Fattoriale = [] (int n) {
-        int res = 1;
-        for (int i = 2; i <= n; i++) {
-            res = res * i;
+
+Matrix* Matrix::SVdecomposition () {
+    Matrix* QL;
+    Matrix* USV = new Matrix[3];
+    if ((*this) == this->T()) {
+        QL = Eigendecomposition();
+        USV[0] = QL[0];
+        USV[1] = QL[1];
+        USV[2] = QL[0];
+    } else {
+        Matrix S1 = (*this) * (this->T());
+        QL = S1.Eigendecomposition();
+        Matrix U = QL[0], sv1 = QL[1];
+        Matrix S2 = (this->T()) * (*this);
+        QL = S2.Eigendecomposition();
+        Matrix V = QL[0], sv2 = QL[1];
+        Matrix sv_squared = (sv1.rows < sv2.rows) ? sv1 : sv2;
+        Matrix sigma(U.cols, V.cols);
+        for (int i = 0; i < sv_squared.rows; i++) {
+            sigma.matrix[i][i] = sqrt(sv_squared.matrix[i][i]);
         }
-        return res;
-    };
-    Polynomial car (rows);
-    int iCoeff = car.GetDegree();
-    car.SetCoefficient(iCoeff, pow(-1, iCoeff));
-    car.SetCoefficient(iCoeff-1, pow(-1, iCoeff-1)*Trace());
-    for (int k = iCoeff-2; k > 0; k--) {
-        int segno = pow(-1 ,k);   
-        int comb = Fattoriale(iCoeff)/(Fattoriale(iCoeff-k)*Fattoriale(k));    
-        Matrix temp1 = GetCombs(rows, comb, k);
-        double minore = 0;
-        for (int t = 0; t < comb; t++) {
-            int* indici = new int[k];
-            for (int z = 0; z < k; z++) {
-                indici[z] = (int)temp1.matrix[t][z]-1;
-            }
-            Matrix temp2 = GetMatrix(indici, k);
-            minore += temp2.Determinant();
-        }
-        car.SetCoefficient(k, segno*minore);
+        USV[0] = U;
+        USV[1] = sigma;
+        USV[2] = V;
     }
-    car.SetCoefficient(0, Determinant());
-    return car;
+    return USV;
 }
 
 Matrix* Matrix::QRdecomposition () {
-    //works fine only for symmetric matrices
     if (rows != cols) {throw 2;}
     Matrix Qt = Eye(rows), R = *this, H;
     for (int i = 0; i < rows; i++) {
@@ -438,6 +422,37 @@ Matrix Matrix::HouseholderReflection(int i) {
         }
     }
     return H;
+}
+
+Polynomial Matrix::CharacteristicPol () {
+    auto Fattoriale = [] (int n) {
+        int res = 1;
+        for (int i = 2; i <= n; i++) {
+            res = res * i;
+        }
+        return res;
+    };
+    Polynomial car (rows);
+    int iCoeff = car.GetDegree();
+    car.SetCoefficient(iCoeff, pow(-1, iCoeff));
+    car.SetCoefficient(iCoeff-1, pow(-1, iCoeff-1)*Trace());
+    for (int k = iCoeff-2; k > 0; k--) {
+        int segno = pow(-1 ,k);   
+        int comb = Fattoriale(iCoeff)/(Fattoriale(iCoeff-k)*Fattoriale(k));    
+        Matrix temp1 = GetCombs(rows, comb, k);
+        double minore = 0;
+        for (int t = 0; t < comb; t++) {
+            int* indici = new int[k];
+            for (int z = 0; z < k; z++) {
+                indici[z] = (int)temp1.matrix[t][z]-1;
+            }
+            Matrix temp2 = GetMatrix(indici, k);
+            minore += temp2.Determinant();
+        }
+        car.SetCoefficient(k, segno*minore);
+    }
+    car.SetCoefficient(0, Determinant());
+    return car;
 }
 
 ostream& operator << (ostream& os, Matrix& mat) {

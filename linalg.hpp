@@ -96,10 +96,10 @@ class Matrix {
     double Trace ();
     double Determinant (char method = 'g');
     Matrix* Eigendecomposition();
-    double* SingularValues();
-    Polynomial CharacteristicPol ();
+    Matrix* SVdecomposition();
     Matrix* QRdecomposition ();
     Matrix HouseholderReflection (int);
+    Polynomial CharacteristicPol ();
 
     friend ostream& operator << (ostream&, Matrix&);
     friend istream& operator >> (istream&, Matrix&);
