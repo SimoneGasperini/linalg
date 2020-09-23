@@ -347,16 +347,14 @@ Matrix* Matrix::Eigendecomposition () {
     Matrix Q = Eye(this->cols);
     Matrix A = *this;
     Matrix I = Eye(A.rows);
-    for (int iter = 0; iter < 1000; iter++) {
+    for (int iter = 0; iter < 10000; iter++) {
         double shift = WilkinsonShift(A);
         A = A - (I * shift);
         Matrix* QR = A.QRdecomposition();
         Q = Q * QR[0];
         A = (QR[1] * QR[0]) + (I * shift);
-        A.Approx();
         if (A == A.Triu()) break;
     }
-    Q.Approx(1000);
     Matrix* QL = new Matrix[2];
     QL[0] = Q; QL[1] = A.Diag();
     return QL;
@@ -394,6 +392,7 @@ Matrix* Matrix::QRdecomposition () {
     Matrix Qt = Eye(rows), R = *this, H;
     for (int i = 0; i < rows; i++) {
         H = R.HouseholderReflection(i);
+        H.Approx();
         Qt = H * Qt;
         R = H * R;
     }
