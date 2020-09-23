@@ -96,7 +96,6 @@ double* Polynomial::ComputeZeros () {
 }
 
 ostream& operator << (ostream& os, Polynomial& pol) {
-    pol.Approx();
     for (int k = pol.degree; k > 0; k--) {   
         double corrente = abs(pol.coefficients[k]);
         if (pol.coefficients[k] != 0) {

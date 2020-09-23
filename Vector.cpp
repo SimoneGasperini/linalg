@@ -63,7 +63,6 @@ Vector Vector::ProjectedOnto (Vector vec) {
 }
 
 ostream& operator << (ostream& os, Vector& vec) {
-    vec.Approx();
     os << "[";
     for (int i = 0; i < vec.size; i++) {
         os << setprecision(3) << vec.array[i];

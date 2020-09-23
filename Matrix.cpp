@@ -456,7 +456,6 @@ Polynomial Matrix::CharacteristicPol () {
 }
 
 ostream& operator << (ostream& os, Matrix& mat) {
-    mat.Approx();
     for (int i = 0; i < mat.rows; i++) {
         os << "[";
         for (int j = 0; j < mat.cols; j++) {
