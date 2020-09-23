@@ -4,7 +4,7 @@ using namespace std;
 
 main () {
 /*
-    # symmetric matrix 4x4 with det=0
+    //symmetric matrix 4x4 with det=0
     int r = 4, c = 4;
     double** mat = new double*[r];
     for (int i = 0; i < r; i++) {
@@ -30,7 +30,7 @@ main () {
 */
 
     srand((unsigned int)time(NULL));
-    int r = 8, c = 8;
+    int r = 5, c = 2;
     double** mat = new double*[r];
     for (int i = 0; i < r; i++) {
         mat[i] = new double[c];
@@ -39,12 +39,22 @@ main () {
         }
     }
     Matrix A (r, c, mat);
+    cout << "\nRectangular matrix A =\n" << A;
+    Matrix* USV = A.SVdecomposition();
+
+    cout << "\nU =\n" << USV[0];
+    cout << "\nsigma =\n" << USV[1];
+    cout << "\nV =\n" << USV[2];
+    Matrix B = USV[0] * USV[1] * USV[2].T();
+    cout << "\nB =\n" << B;
+
+/*
     Matrix triu = A.Triu();
     Matrix triuT = triu.T();
     Matrix diag = A.Diag();
     Matrix S = triu + triuT - diag;
 
-    cout << "\nSymmetric matrix (from the initial one) S =\n" << S;
+    cout << "\nSymmetric matrix S =\n" << S;
 
     //double norm = S.Norm('f');
     //cout << "\nFrobenius Norm = " << norm;
@@ -61,9 +71,5 @@ main () {
     cout << "\nL =\n" << L;
     Matrix S_again = Q * L * Q.T();
     cout << "\nQ * L * Qt =\n" << S_again;
-
-    //double* sv = S.SingularValues();
-    //Vector singvals(S.GetCols(), sv);
-    //cout << "\nSingular values = " << singvals << "\n";
-
+*/
 }
