@@ -114,6 +114,8 @@ class Matrix {
 };
 
 Matrix Eye(int);
+Vector Diag (Matrix);
+Matrix Diag (Vector);
 double Dot (Vector, Vector);
 Vector Dot (Matrix, Vector);
 Vector Dot (Vector, Matrix);

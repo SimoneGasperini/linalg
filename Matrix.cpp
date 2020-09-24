@@ -272,8 +272,9 @@ Matrix Matrix::Triu () {
 }
 
 Matrix Matrix::Diag () {
-    Matrix diag(rows, cols);
-    for (int i = 0; i < diag.rows; i++) {
+    int dim = (rows < cols) ? rows : cols;
+    Matrix diag(dim, dim);
+    for (int i = 0; i < dim; i++) {
         diag.matrix[i][i] = matrix[i][i];
     }
     return diag;

@@ -9,6 +9,27 @@ Matrix Eye (int n) {
     return id;
 }
 
+Vector Diag (Matrix mat) {
+    int size = (mat.GetRows() < mat.GetCols()) ? mat.GetRows() : mat.GetCols();
+    double* arr = new double[size];
+    for (int i = 0; i < size; i++) {
+        arr[i] = mat.GetElement(i,i);
+    }
+    Vector diag(size, arr);
+    return diag;
+}
+
+Matrix Diag (Vector vec) {
+    int size = vec.GetSize();
+    double** arr = new double*[size];
+    for (int i = 0; i < size; i++) {
+        arr[i] = new double[size];
+        arr[i][i] = vec.GetElement(i);
+    }
+    Matrix diag(size, size, arr);
+    return diag;
+}
+
 double Dot (Vector v1, Vector v2) {
     double result = v1 * v2;
     return result;
