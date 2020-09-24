@@ -86,7 +86,6 @@ class Matrix {
     Matrix T ();
     Matrix I ();
     Matrix Triu ();
-    Matrix Diag ();
     Matrix Gauss ();
     int Rank();
     double Trace ();

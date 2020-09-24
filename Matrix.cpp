@@ -271,15 +271,6 @@ Matrix Matrix::Triu () {
     return triu;
 }
 
-Matrix Matrix::Diag () {
-    int dim = (rows < cols) ? rows : cols;
-    Matrix diag(dim, dim);
-    for (int i = 0; i < dim; i++) {
-        diag.matrix[i][i] = matrix[i][i];
-    }
-    return diag;
-}
-
 Matrix Matrix::Gauss () {
     Matrix gauss = *this;
     gauss.SwapRows();
@@ -344,6 +335,7 @@ double Matrix::Determinant (char method) {
 }
 
 Matrix* Matrix::Eigendecomposition () {
+    // works fine only for symmetric matrices
     if (rows != cols) {throw 2;}
     Matrix Q = Eye(this->cols);
     Matrix A = *this;
@@ -357,7 +349,7 @@ Matrix* Matrix::Eigendecomposition () {
         if (A == A.Triu()) break;
     }
     Matrix* QL = new Matrix[2];
-    QL[0] = Q; QL[1] = A.Diag();
+    QL[0] = Q; QL[1] = Diag(Diag(A));
     return QL;
 }
 
@@ -370,20 +362,17 @@ Matrix* Matrix::SVdecomposition () {
         USV[1] = QL[1];
         USV[2] = QL[0];
     } else {
-        Matrix S1 = (*this) * (this->T());
-        QL = S1.Eigendecomposition();
-        Matrix U = QL[0], sv1 = QL[1];
-        Matrix S2 = (this->T()) * (*this);
-        QL = S2.Eigendecomposition();
-        Matrix V = QL[0], sv2 = QL[1];
-        Matrix sv_squared = (sv1.rows < sv2.rows) ? sv1 : sv2;
-        Matrix sigma(U.cols, V.cols);
-        for (int i = 0; i < sv_squared.rows; i++) {
-            sigma.matrix[i][i] = sqrt(sv_squared.matrix[i][i]);
+        // A = U * sigma * V.T ---> computes U if A.rows<A.cols, V if A.rows>A.cols
+        Matrix symm_pos_semidef = (rows < cols) ? (*this)*(this->T()) : (this->T())*(*this);
+        QL = symm_pos_semidef.Eigendecomposition();
+        Matrix Q1 = QL[0], sigma = QL[1];
+        for (int i = 0; i < sigma.rows; i++) {
+            sigma.matrix[i][i] = sqrt(sigma.matrix[i][i]);
         }
-        USV[0] = U;
+        Matrix Q2 = (rows < cols) ? (this->T()) * Q1 * sigma.I() : (*this) * Q1 * sigma.I();
+        USV[0] = (rows < cols) ? Q1 : Q2;
         USV[1] = sigma;
-        USV[2] = V;
+        USV[2] = (rows < cols) ? Q2 : Q1;
     }
     return USV;
 }
