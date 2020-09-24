@@ -7,8 +7,6 @@ class Polynomial {
     int degree;
     double* coefficients;
 
-    void Approx ();
-
     public:
     Polynomial () {};
     Polynomial (int);
@@ -34,8 +32,6 @@ class Polynomial {
 class Vector {
     int size;
     double* array;
-
-    void Approx ();
 
     public:
     Vector () {};
@@ -71,10 +67,9 @@ class Matrix {
     Matrix GetMatrix (int);
     Matrix GetMatrix (int*, int);
     Matrix GetCombs (int, int, int);
-
     Matrix Merge (const Matrix&);
 	void SwapRows ();
-    void Approx (double = 1);
+    void Approx ();
 
     public:
     Matrix () {};

@@ -35,14 +35,6 @@ double Vector::GetElement (int i) {return array[i];}
 
 void Vector::SetElement (int i, double val) {array[i] = val;}
 
-void Vector::Approx () {
-    for (int i = 0; i < size; i++) {
-        if (abs(array[i]) < APPROX) {
-            array[i] = 0;
-        }
-    }
-}
-
 void Vector::Sort (bool reverse) {
     if (reverse) {
         sort(array, array+size, greater<int>());

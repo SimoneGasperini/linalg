@@ -33,14 +33,6 @@ void Polynomial::SetCoefficient (int indice, double valore) {
     coefficients[indice] = valore;
 }
 
-void Polynomial::Approx () {
-    for (int i = 0; i < degree+1; i++) {
-        if (abs(coefficients[i]) < APPROX) {
-            coefficients[i] = 0;
-        }
-    }
-}
-
 double Polynomial::Evaluate (double x) {
     double valore = 0;  
     for (int i = degree; i >= 0; i--) {

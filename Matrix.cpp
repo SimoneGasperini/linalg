@@ -172,10 +172,10 @@ void Matrix::SwapRows () {
     }
 }
 
-void Matrix::Approx (double factor) {
+void Matrix::Approx () {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (abs(matrix[i][j]) < factor*APPROX) {
+            if (abs(matrix[i][j]) < APPROX) {
                 matrix[i][j] = 0;
             }
         }
