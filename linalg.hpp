@@ -82,7 +82,7 @@ class Matrix {
     Vector GetColVector(int);
     double GetElement (int, int);
     void SetElement (int, int, double);
-    double Norm(char p = '2');
+    double Norm(char p = 'f');
     Matrix T ();
     Matrix I ();
     Matrix Triu ();

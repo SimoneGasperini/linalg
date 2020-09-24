@@ -181,41 +181,37 @@ void Matrix::Approx () {
         }
     }
 }
-/*
+
 double Matrix::Norm (char p) {
     double result;
-    //maximum of the singular values
+    // maximum singular value
     if (p == '2') {
-        int n = rows < cols ? rows : cols;
-        double* sigmas = SingularValues();
-        result = sigmas[0];
-        for (int i = 1; i < n; i++) {
-            if (sigmas[i] > result) {
-                result = sigmas[i];
+        Matrix* USV = SVdecomposition();
+        Matrix sigma = USV[1];
+        result = sigma.matrix[0][0];
+        for (int i = 1; i < sigma.rows; i++) {
+            if (sigma.matrix[i][i] > result) {
+                result = sigma.matrix[i][i];
             }
         }
     }
-    //frobenius norm
+    // frobenius norm
     if (p == 'f') {
-        result = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                result += matrix[i][j]*matrix[i][j];
-            }
-        }
+        Matrix X = (rows < cols) ? (*this)*(this->T()) : (this->T())*(*this);
+        result = sqrt(X.Trace());
     }
-    //nuclear norm (works fine only for positive semi-definite matrices)
+    // nuclear norm
     if (p == 'n') {
+        Matrix* USV = SVdecomposition();
+        Matrix sigma = USV[1];
         result = 0;
-        int n = rows < cols ? rows : cols;
-        double* sigmas = SingularValues();
-        for (int i = 0; i < n; i++) {
-            result += sigmas[i];
+        for (int i = 0; i < sigma.rows; i++) {
+            result += sigma.matrix[i][i];
         }
     }
     return result;
 }
-*/
+
 Matrix Matrix::T () {
     Matrix trasp(cols, rows);
     for (int i = 0; i < trasp.rows; i++) {
