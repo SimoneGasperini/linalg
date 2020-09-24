@@ -1,4 +1,5 @@
 #include <cmath>
+#include <algorithm>
 #include <iomanip>
 #include "linalg.hpp"
 
@@ -39,6 +40,14 @@ void Vector::Approx () {
         if (abs(array[i]) < APPROX) {
             array[i] = 0;
         }
+    }
+}
+
+void Vector::Sort (bool reverse) {
+    if (reverse) {
+        sort(array, array+size, greater<int>());
+    } else {
+        sort(array, array+size);
     }
 }
 
