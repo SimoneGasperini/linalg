@@ -50,4 +50,28 @@ main () {
     Matrix S_again = QL[0] * QL[1] * QL[0].T();
     cout << "\nQ * Lambda * Q.T =\n" << S_again;
 
+    r = 3, c = 3;
+    mat = new double*[r];
+    for (int i = 0; i < r; i++) {
+        mat[i] = new double[c];
+    }
+    mat[0][0] = 4;
+    mat[0][1] = 12;
+    mat[0][2] = -16;
+    mat[1][0] = 12;
+    mat[1][1] = 37;
+    mat[1][2] = -43;
+    mat[2][0] = -16;
+    mat[2][1] = -43;
+    mat[2][2] = 98;
+    Matrix P (r, c, mat);
+    cout << "\n\n\nSymmetric positive definite matrix P =\n" << P;
+
+    Matrix* dec = P.Choleskydecomposition(true);
+    cout << "\nL =\n" << dec[0];
+    cout << "\nD =\n" << dec[1];
+    cout << "\nL.T =\n" << dec[2];
+    Matrix P_again = dec[0] * dec[1] * dec[2];
+    cout << "\nL * D * L.T =\n" << P_again;
+
 }
