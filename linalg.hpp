@@ -93,6 +93,7 @@ class Matrix {
     Matrix* Eigendecomposition();
     Matrix* SVdecomposition();
     Matrix* QRdecomposition ();
+    Matrix* Choleskydecomposition(bool diag = false);
     Matrix HouseholderReflection (int);
     Polynomial CharacteristicPol ();
 

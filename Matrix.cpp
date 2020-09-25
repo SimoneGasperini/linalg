@@ -388,6 +388,38 @@ Matrix* Matrix::QRdecomposition () {
     return QR;
 }
 
+Matrix* Matrix::Choleskydecomposition (bool diag) {
+    if (rows != cols) {throw 2;}
+    Matrix C(rows, cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j <= i; j++) {
+            int sum = 0;
+            if (j == i) {
+                for (int k = 0; k < j; k++)
+                    sum += pow(C.matrix[j][k], 2);
+                C.matrix[j][j] = sqrt(matrix[j][j] - sum);
+            } else {
+                for (int k = 0; k < j; k++)
+                    sum += C.matrix[i][k] * C.matrix[j][k];
+                C.matrix[i][j] = (matrix[i][j] - sum) / C.matrix[j][j];
+            }
+        }
+    }
+    Matrix* factors;
+    if (!diag) {
+        factors = new Matrix[2];
+        factors[0] = C;
+        factors[1] = C.T();
+    } else {
+        factors = new Matrix[3];
+        Matrix S = Diag(Diag(C));
+        factors[0] = C * S.I();
+        factors[1] = S * S;
+        factors[2] = factors[0].T();
+    }
+    return factors;
+}
+
 Matrix Matrix::HouseholderReflection(int i) {
     Vector _x = GetColVector(i);
     Vector x(rows-i);
