@@ -38,11 +38,11 @@ class Vector {
     Vector (int);
     Vector (int, double*);
     Vector (const Vector&);
-    int GetSize();
-    double* GetArray();
+    int GetSize ();
+    double* GetArray ();
     double GetElement (int);
     void SetElement (int, double);
-    void Sort(bool reverse = false);
+    void Sort (bool reverse = false);
     double Norm (int p = 2);
     Vector Normalized (int p = 2);
     Vector ProjectedOnto (Vector);
@@ -78,24 +78,27 @@ class Matrix {
     Matrix (const Matrix&);
     int GetRows ();
     int GetCols ();
-    Vector GetRowVector(int);
-    Vector GetColVector(int);
+    Vector GetRowVector (int);
+    Vector GetColVector (int);
     double GetElement (int, int);
     void SetElement (int, int, double);
-    double Norm(char p = 'f');
+    double Norm (char p = 'f');
     Matrix T ();
     Matrix I ();
     Matrix Triu ();
     Matrix Gauss ();
-    int Rank();
+    int Rank ();
     double Trace ();
     double Determinant (char method = 'g');
-    Matrix* Eigendecomposition();
-    Matrix* SVdecomposition();
+    Matrix* Eigendecomposition ();
+    Matrix* SVdecomposition ();
     Matrix* QRdecomposition ();
-    Matrix* Choleskydecomposition(bool diag = false);
+    Matrix* Choleskydecomposition (bool diag = false);
     Matrix HouseholderReflection (int);
     Polynomial CharacteristicPol ();
+    bool IsSquare ();
+    bool IsSymmetric ();
+    bool IsPositiveDefinite ();
 
     friend ostream& operator << (ostream&, Matrix&);
     friend istream& operator >> (istream&, Matrix&);
@@ -109,7 +112,7 @@ class Matrix {
     bool operator != (const Matrix&);
 };
 
-Matrix Eye(int);
+Matrix Eye (int);
 Vector Diag (Matrix);
 Matrix Diag (Vector);
 double Dot (Vector, Vector);

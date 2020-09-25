@@ -331,8 +331,16 @@ double Matrix::Determinant (char method) {
 }
 
 Matrix* Matrix::Eigendecomposition () {
-    // works fine only for symmetric matrices
-    if (rows != cols) {throw 2;}
+    try {
+        if (!IsSquare())
+            throw "Eigendecomposition() --> The matrix is not square\n";
+        if (!IsSymmetric())
+            throw "Eigendecomposition() --> The matrix is not symmetric\n";
+    }
+    catch (const char* err) {
+        cout << "\nEXCEPTION: " << err;
+        throw;
+    }
     Matrix Q = Eye(this->cols);
     Matrix A = *this;
     Matrix I = Eye(A.rows);
@@ -358,7 +366,6 @@ Matrix* Matrix::SVdecomposition () {
         USV[1] = QL[1];
         USV[2] = QL[0];
     } else {
-        // A = U * sigma * V.T ---> computes U if A.rows<A.cols, V if A.rows>A.cols
         Matrix symm_pos_semidef = (rows < cols) ? (*this)*(this->T()) : (this->T())*(*this);
         QL = symm_pos_semidef.Eigendecomposition();
         Matrix Q1 = QL[0], sigma = QL[1];
@@ -374,7 +381,14 @@ Matrix* Matrix::SVdecomposition () {
 }
 
 Matrix* Matrix::QRdecomposition () {
-    if (rows != cols) {throw 2;}
+    try {
+        if (!IsSquare())
+            throw "QRdecomposition() --> The matrix is not square\n";
+    }
+    catch (const char* err) {
+        cout << "\nEXCEPTION: " << err;
+        throw;
+    }
     Matrix Qt = Eye(rows), R = *this, H;
     for (int i = 0; i < rows; i++) {
         H = R.HouseholderReflection(i);
@@ -389,7 +403,18 @@ Matrix* Matrix::QRdecomposition () {
 }
 
 Matrix* Matrix::Choleskydecomposition (bool diag) {
-    if (rows != cols) {throw 2;}
+    try {
+        if (!IsSquare())
+            throw "Choleskydecomposition(bool) --> The matrix is not square\n";
+        if (!IsSymmetric())
+            throw "Choleskydecomposition(bool) --> The matrix is not symmetric\n";
+        if (!IsPositiveDefinite())
+            throw "Choleskydecomposition(bool) --> The matrix is not positive definite\n";
+    }
+    catch (const char* err) {
+        cout << "\nEXCEPTION: " << err;
+        throw;
+    }
     Matrix C(rows, cols);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j <= i; j++) {
@@ -470,6 +495,24 @@ Polynomial Matrix::CharacteristicPol () {
     }
     car.SetCoefficient(0, Determinant());
     return car;
+}
+
+bool Matrix::IsSquare () {
+    return (rows == cols) ? true : false;
+}
+
+bool Matrix::IsSymmetric () {
+    if (!IsSquare()) return false;
+    return (*this == this->T()) ? true : false;
+}
+
+bool Matrix::IsPositiveDefinite () {
+    if (!IsSymmetric()) return false;
+    Matrix gauss = Gauss();
+    for (int i = 0; i < gauss.rows; i++) {
+        if (gauss.matrix[i][i] < 0 || abs(gauss.matrix[i][i]) < APPROX) return false;
+    }
+    return true;
 }
 
 ostream& operator << (ostream& os, Matrix& mat) {
@@ -576,11 +619,11 @@ Matrix Matrix::operator / (double k) {
 }
 
 bool Matrix::operator == (const Matrix& mat) {
-    if (rows != mat.rows) {return false;}
-    if (cols != mat.cols) {return false;}
+    if (rows != mat.rows) return false;
+    if (cols != mat.cols) return false;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (abs(matrix[i][j] - mat.matrix[i][j]) > APPROX) {return false;}
+            if (abs(matrix[i][j] - mat.matrix[i][j]) > APPROX) return false;
         }
     }
     return true;
