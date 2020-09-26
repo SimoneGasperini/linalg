@@ -68,7 +68,8 @@ class Matrix {
     Matrix GetMatrix (int*, int);
     Matrix GetCombs (int, int, int);
     Matrix Merge (const Matrix&);
-	void SwapRows ();
+	Matrix SwapRows ();
+    Matrix GetPermutation (Matrix&);
     void Approx ();
 
     public:

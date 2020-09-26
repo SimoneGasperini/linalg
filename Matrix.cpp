@@ -154,32 +154,48 @@ Matrix Matrix::Merge (const Matrix& right) {
     return composta;
 }
 
-void Matrix::SwapRows () {
+Matrix Matrix::SwapRows () {
+    Matrix swapped = *this;
     double *temp = new double[rows];
     for (int i = 0; i < rows-1; i++) {
-		if (matrix[i][i] == 0) {
+		if (swapped.matrix[i][i] == 0) {
 			for (int p = i+1; p < rows; p++) {
-				if (matrix[p][i] != 0) {
+				if (swapped.matrix[p][i] != 0) {
 					for (int k = 0; k < cols; k++) {
-						temp[k] = matrix[i][k];
-						matrix[i][k] = matrix[p][k];
-						matrix[p][k] = temp[k];
+						temp[k] = swapped.matrix[i][k];
+						swapped.matrix[i][k] = swapped.matrix[p][k];
+						swapped.matrix[p][k] = temp[k];
 					}
                     break;
 				}
 			}
             for (int p = 0; p < i; p++) {
-				if (matrix[p][i] != 0) {
+				if (swapped.matrix[p][i] != 0) {
 					for (int k = 0; k < cols; k++) {
-						temp[k] = matrix[i][k];
-						matrix[i][k] = matrix[p][k];
-						matrix[p][k] = temp[k];
+						temp[k] = swapped.matrix[i][k];
+						swapped.matrix[i][k] = swapped.matrix[p][k];
+						swapped.matrix[p][k] = temp[k];
 					}
                     break;
 				}
 			}
 		}
     }
+    return swapped;
+}
+
+Matrix Matrix::GetPermutation (Matrix& original) {
+    Matrix P(rows,rows);
+    for (int i = 0; i < rows; i++) {
+        Vector row1 = GetRowVector(i);
+        for (int p = 0; p < rows; p++) {
+            Vector row2 = original.GetRowVector(p);
+            if (row1 == row2) {
+                P.matrix[i][p] = 1;
+            }
+        }
+    }
+    return P;
 }
 
 void Matrix::Approx () {
@@ -278,15 +294,12 @@ Matrix Matrix::Triu () {
 }
 
 Matrix Matrix::Gauss () {
-    Matrix gauss = *this;
-    gauss.SwapRows();
-    double a, g;
+    Matrix gauss = this->SwapRows();
     for (int i = 0; i < gauss.rows-1; i++) {
 		for (int q = i+1; q < gauss.rows; q++) {
-			a = gauss.matrix[q][i];
-			g = gauss.matrix[i][i];
+            double k = gauss.matrix[q][i] / gauss.matrix[i][i];
 			for (int j = 0; j < gauss.cols; j++) {
-				gauss.matrix[q][j] -= (gauss.matrix[i][j] / g) * a ;
+				gauss.matrix[q][j] -= gauss.matrix[i][j] * k;
 			}
 		}
 	}
@@ -465,8 +478,9 @@ Matrix* Matrix::LUdecomposition (bool diag) {
         throw;
     }
     if (IsSymmetric()) return Choleskydecomposition(diag);
-    Matrix U = *this, L = Eye(U.rows);
-    U.SwapRows();
+    Matrix L = Eye(rows);
+    Matrix U = this->SwapRows();
+    Matrix P = U.GetPermutation(*this);
     for (int i = 0; i < U.rows-1; i++) {
         for (int q = i+1; q < U.rows; q++) {
             double k = U.matrix[q][i] / U.matrix[i][i];
@@ -478,15 +492,17 @@ Matrix* Matrix::LUdecomposition (bool diag) {
     }
     Matrix* factors;
     if (!diag) {
-        factors = new Matrix[2];
+        factors = new Matrix[3];
         factors[0] = L;
         factors[1] = U;
+        factors[2] = P;
     } else {
-        factors = new Matrix[3];
+        factors = new Matrix[4];
         Matrix D = Diag(Diag(U));
         factors[0] = L;
         factors[1] = D;
         factors[2] = D.I() * L.I() * (*this);
+        factors[3] = P;
     }
     return factors;
 }
