@@ -50,28 +50,24 @@ main () {
     Matrix S_again = QL[0] * QL[1] * QL[0].T();
     cout << "\nQ * Lambda * Q.T =\n" << S_again;
 
-    r = 3, c = 3;
+    r = 5, c = 5;
     mat = new double*[r];
     for (int i = 0; i < r; i++) {
         mat[i] = new double[c];
+        for (int j = 0; j < c; j++) {
+            mat[i][j] = static_cast <double> (rand()) / static_cast <double> (RAND_MAX) * 4 - 2;
+        }
     }
-    mat[0][0] = 4;
-    mat[0][1] = 12;
-    mat[0][2] = -16;
-    mat[1][0] = 12;
-    mat[1][1] = 37;
-    mat[1][2] = -43;
-    mat[2][0] = -16;
-    mat[2][1] = -43;
-    mat[2][2] = 98;
-    Matrix P (r, c, mat);
-    cout << "\n\n\nSymmetric positive definite matrix P =\n" << P;
+    mat[0][0] = 0;
+    mat[3][3] = 0;
+    Matrix C (r, c, mat);
+    cout << "\n\n\nSquare matrix C =\n" << C;
 
-    Matrix* dec = P.Choleskydecomposition(true);
+    Matrix* dec = C.LUdecomposition();
     cout << "\nL =\n" << dec[0];
-    cout << "\nD =\n" << dec[1];
-    cout << "\nL.T =\n" << dec[2];
-    Matrix P_again = dec[0] * dec[1] * dec[2];
-    cout << "\nL * D * L.T =\n" << P_again;
+    cout << "\nU =\n" << dec[1];
+    cout << "\nP =\n" << dec[2];
+    Matrix C_again = dec[2].T() * dec[0] * dec[1];
+    cout << "\nP.T * L * U =\n" << C_again;
 
 }
