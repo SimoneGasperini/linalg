@@ -165,8 +165,18 @@ void Matrix::SwapRows () {
 						matrix[i][k] = matrix[p][k];
 						matrix[p][k] = temp[k];
 					}
+                    break;
 				}
-				break;
+			}
+            for (int p = 0; p < i; p++) {
+				if (matrix[p][i] != 0) {
+					for (int k = 0; k < cols; k++) {
+						temp[k] = matrix[i][k];
+						matrix[i][k] = matrix[p][k];
+						matrix[p][k] = temp[k];
+					}
+                    break;
+				}
 			}
 		}
     }
