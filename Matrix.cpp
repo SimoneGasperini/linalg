@@ -445,6 +445,42 @@ Matrix* Matrix::Choleskydecomposition (bool diag) {
     return factors;
 }
 
+Matrix* Matrix::LUdecomposition (bool diag) {
+    try {
+        if (!IsSquare())
+            throw "LUdecomposition(bool) --> The matrix is not square\n";
+    }
+    catch (const char* err) {
+        cout << "\nEXCEPTION: " << err;
+        throw;
+    }
+    if (IsSymmetric()) return Choleskydecomposition(diag);
+    Matrix U = *this, L = Eye(U.rows);
+    U.SwapRows();
+    for (int i = 0; i < U.rows-1; i++) {
+        for (int q = i+1; q < U.rows; q++) {
+            double k = U.matrix[q][i] / U.matrix[i][i];
+            L.matrix[q][i] = k;
+            for (int j = 0; j < U.cols; j++) {
+                U.matrix[q][j] -= U.matrix[i][j] * k ;
+            }
+        }
+    }
+    Matrix* factors;
+    if (!diag) {
+        factors = new Matrix[2];
+        factors[0] = L;
+        factors[1] = U;
+    } else {
+        factors = new Matrix[3];
+        Matrix D = Diag(Diag(U));
+        factors[0] = L;
+        factors[1] = D;
+        factors[2] = D.I() * L.I() * (*this);
+    }
+    return factors;
+}
+
 Matrix Matrix::HouseholderReflection(int i) {
     Vector _x = GetColVector(i);
     Vector x(rows-i);

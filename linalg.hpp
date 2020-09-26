@@ -94,6 +94,7 @@ class Matrix {
     Matrix* SVdecomposition ();
     Matrix* QRdecomposition ();
     Matrix* Choleskydecomposition (bool diag = false);
+    Matrix* LUdecomposition (bool diag = false);
     Matrix HouseholderReflection (int);
     Polynomial CharacteristicPol ();
     bool IsSquare ();
