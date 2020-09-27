@@ -55,10 +55,12 @@ double Polynomial::ComputeZero () {
     int MAXITER = 1000;
     try {
         while (abs(Evaluate(rad)) > APPROX) {
-            if (i > MAXITER) {
+            if (i > MAXITER)
                 throw "\033[1;31mdouble Polynomial::ComputeZero () -->\n\tThe polynomial has at least one complex zero solution\033[0m\n";
-            }
-            rad -= Evaluate(rad)/EvaluateDerivative(rad);
+            double val = EvaluateDerivative(rad);
+            if (val == 0)
+                throw "\033[1;31mdouble Polynomial::ComputeZero () -->\n\tDivision by zero\033[0m\n";
+            rad -= Evaluate(rad) / val;
             i++;
         }
     }

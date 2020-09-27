@@ -138,6 +138,14 @@ Vector Vector::operator * (double k) {
 }
 
 Vector Vector::operator / (double k) {
+    try {
+        if (k == 0)
+            throw "\033[1;31mVector Vector::operator / (double) -->\n\tDivision by zero\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Vector res(size);
     for (int i = 0; i < size; i++) {
         res.array[i] = array[i] / k;
