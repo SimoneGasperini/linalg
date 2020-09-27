@@ -82,7 +82,14 @@ Vector& Vector::operator = (const Vector& vec) {
 }
 
 Vector Vector::operator + (const Vector& vec) {
-    if (size != vec.size) {throw 5;}
+    try {
+        if (size != vec.size)
+            throw "\033[1;31mVector Vector::operator + (Vector) -->\n\tThe vectors have different sizes\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Vector sum(size);
     for (int i = 0; i < size; i++) {
         sum.array[i] = array[i] + vec.array[i];
@@ -91,7 +98,14 @@ Vector Vector::operator + (const Vector& vec) {
 }
 
 Vector Vector::operator - (const Vector& vec) {
-    if (size != vec.size) {throw 5;}
+    try {
+        if (size != vec.size)
+            throw "\033[1;31mVector Vector::operator - (Vector) -->\n\tThe vectors have different sizes\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Vector diff(size);
     for (int i = 0; i < size; i++) {
         diff.array[i] = array[i] - vec.array[i];
@@ -100,7 +114,14 @@ Vector Vector::operator - (const Vector& vec) {
 }
 
 double Vector::operator * (const Vector& vec) {
-    if (size != vec.size) {throw 5;}
+    try {
+        if (size != vec.size)
+            throw "\033[1;31mVector Vector::operator * (Vector) -->\n\tThe vectors have different sizes\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     double result = 0;
     for (int i = 0; i < size; i++) {
         result += array[i] * vec.array[i];

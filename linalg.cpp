@@ -36,7 +36,14 @@ Vector Dot (Matrix mat, Vector vec) {
     int rows = mat.GetRows();
     int cols = mat.GetCols();
     int size = vec.GetSize();
-    if (cols != size) {throw 5;}
+    try {
+        if (cols != size)
+            throw "\033[1;31mVector Dot (Matrix, Vector) -->\n\tThe number of matrix columns and the size of the vector are different\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Vector result(rows);
     for (int i = 0; i < rows; i++) {
         double el = 0;
@@ -52,7 +59,14 @@ Vector Dot (Vector vec, Matrix mat) {
     int size = vec.GetSize();
     int rows = mat.GetRows();
     int cols = mat.GetCols();
-    if (size != rows) {throw 5;}
+    try {
+        if (size != rows)
+            throw "\033[1;31mVector Dot (Vector, Matrix) -->\n\tThe size of the vector and the number of matrix rows are different\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Vector result(cols);
     for (int i = 0; i < cols; i++) {
         double el = 0;
@@ -84,7 +98,14 @@ Matrix Outer (Vector v1, Vector v2) {
 Vector Hadamard (Vector v1, Vector v2) {
     int s1 = v1.GetSize();
     int s2 = v2.GetSize();
-    if (s1 != s2) {throw 5;}
+    try {
+        if (s1 != s2)
+            throw "\033[1;31mVector Hadamard (Vector, Vector) -->\n\tThe sizes of the two vectors are different\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Vector result(s1);
     for (int i = 0; i < s1; i++) {
         result.SetElement(i, v1.GetElement(i)*v2.GetElement(i));

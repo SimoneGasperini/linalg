@@ -58,6 +58,39 @@ Vector Matrix::GetColVector (int k) {
     return col;
 }
 
+<<<<<<< HEAD
+=======
+void Matrix::SetRowVector (int k, Vector row) {
+    try {
+        if (row.GetSize() != cols)
+            throw "\033[1;31mvoid Matrix::SetRowVector (int, Vector) -->\n\tThe size of the row vector and the number of matrix columns are different\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
+    double* arr = row.GetArray();
+    for (int i = 0; i < cols; i++) {
+        matrix[k][i] = arr[i];
+    }
+}
+
+void Matrix::SetColVector (int k, Vector col) {
+    try {
+        if (col.GetSize() != rows)
+            throw "\033[1;31mvoid Matrix::SetColVector (int, Vector) -->\n\tThe size of the column vector and the number of matrix rows are different\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
+    double* arr = col.GetArray();
+    for (int i = 0; i < rows; i++) {
+        matrix[i][k] = arr[i];
+    }
+}
+
+>>>>>>> 4e8f208... completed exceptions handling
 double Matrix::GetElement (int i, int j) {return matrix[i][j];}
 
 void Matrix::SetElement (int i, int j, double val) {matrix[i][j] = val;}
@@ -247,7 +280,14 @@ Matrix Matrix::T () {
 }
 
 Matrix Matrix::I () {
-    if (Determinant() == 0) {throw 4;}
+    try {
+        if (abs(Determinant()) < APPROX)
+            throw "\033[1;31mMatrix Matrix::I () -->\n\tThe matrix cannot be inverted (determinant = 0)\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Matrix id = Eye(rows);
     Matrix composta = this->Merge(id);
     Matrix gauss = composta.Gauss();
@@ -294,6 +334,13 @@ Matrix Matrix::Triu () {
 Matrix Matrix::Gauss () {
     Matrix gauss = this->SwapRows();
     for (int i = 0; i < gauss.rows-1; i++) {
+        if (gauss.matrix[i][i] == 0) {
+            if (i == gauss.rows-2) {
+                break;
+            } else {
+                continue;
+            }
+        }
 		for (int q = i+1; q < gauss.rows; q++) {
             double k = gauss.matrix[q][i] / gauss.matrix[i][i];
 			for (int j = 0; j < gauss.cols; j++) {
@@ -319,7 +366,14 @@ int Matrix::Rank () {
 }
 
 double Matrix::Trace () {
-    if (rows != cols) {throw 2;}
+    try {
+        if (!IsSquare())
+            throw "\033[1;31mdouble Matrix::Trace () -->\n\tThe trace cannot be computed because the matrix is not square\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     double result = 0;
     for (int i = 0; i < rows; i++) {
         result += matrix[i][i];
@@ -328,7 +382,14 @@ double Matrix::Trace () {
 }
 
 double Matrix::Determinant (char method) {
-    if (rows != cols) {throw 2;}
+    try {
+        if (!IsSquare())
+            throw "\033[1;31mdouble Matrix::Determinant () -->\n\tThe determinant cannot be computed because the matrix is not square\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     double result;
     if (method == 'g') {
         result = 1;
@@ -354,12 +415,12 @@ double Matrix::Determinant (char method) {
 Matrix* Matrix::Eigendecomposition () {
     try {
         if (!IsSquare())
-            throw "Eigendecomposition() --> The matrix is not square\n";
+            throw "\033[1;31mMatrix* Matrix::Eigendecomposition () -->\n\tThe eigen-decomposition cannot be performed for non-square matrices\033[0m\n";
         if (!IsSymmetric())
-            throw "Eigendecomposition() --> The matrix is not symmetric\n";
+            throw "\033[1;31mMatrix* Matrix::Eigendecomposition () -->\n\tThe eigen-decomposition is not implemented for non-symmetric matrices\033[0m\n";
     }
     catch (const char* err) {
-        cout << "\nEXCEPTION: " << err;
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
         throw;
     }
     Matrix Q = Eye(this->cols);
@@ -404,10 +465,10 @@ Matrix* Matrix::SVdecomposition () {
 Matrix* Matrix::QRdecomposition () {
     try {
         if (!IsSquare())
-            throw "QRdecomposition() --> The matrix is not square\n";
+            throw "\033[1;31mMatrix* Matrix::QRdecomposition () -->\n\tThe QR decomposition cannot be performed for non-square matrices\033[0m\n";
     }
     catch (const char* err) {
-        cout << "\nEXCEPTION: " << err;
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
         throw;
     }
     Matrix Qt = Eye(rows), R = *this, H;
@@ -426,14 +487,14 @@ Matrix* Matrix::QRdecomposition () {
 Matrix* Matrix::Choleskydecomposition (bool diag) {
     try {
         if (!IsSquare())
-            throw "Choleskydecomposition(bool) --> The matrix is not square\n";
+            throw "\033[1;31mMatrix* Matrix::Choleskydecomposition (bool) -->\n\tThe Cholesky decomposition cannot be performed for non-square matrices\033[0m\n";
         if (!IsSymmetric())
-            throw "Choleskydecomposition(bool) --> The matrix is not symmetric\n";
+            throw "\033[1;31mMatrix* Matrix::Choleskydecomposition (bool) -->\n\tThe Cholesky decomposition cannot be performed for non-symmetric matrices\033[0m\n";
         if (!IsPositiveDefinite())
-            throw "Choleskydecomposition(bool) --> The matrix is not positive definite\n";
+            throw "\033[1;31mMatrix* Matrix::Choleskydecomposition (bool) -->\n\tThe Cholesky decomposition cannot be performed for non-positive definite matrices\033[0m\n";
     }
     catch (const char* err) {
-        cout << "\nEXCEPTION: " << err;
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
         throw;
     }
     Matrix C(rows, cols);
@@ -469,10 +530,10 @@ Matrix* Matrix::Choleskydecomposition (bool diag) {
 Matrix* Matrix::LUdecomposition (bool diag) {
     try {
         if (!IsSquare())
-            throw "LUdecomposition(bool) --> The matrix is not square\n";
+            throw "\033[1;31mMatrix* Matrix::LUdecomposition (bool) -->\n\tThe LU decomposition cannot be performed for non-square matrices\033[0m\n";
     }
     catch (const char* err) {
-        cout << "\nEXCEPTION: " << err;
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
         throw;
     }
     if (IsSymmetric()) return Choleskydecomposition(diag);
@@ -624,7 +685,14 @@ Matrix& Matrix::operator = (const Matrix& mat) {
 }
 
 Matrix Matrix::operator + (const Matrix& mat) {
-    if (rows != mat.rows || cols != mat.cols) {throw 3;}
+    try {
+        if (rows != mat.rows || cols != mat.cols)
+            throw "\033[1;31mMatrix Matrix::operator + (Matrix) -->\n\tThe matrices have different dimensions\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Matrix somma(rows, cols);
     for (int i = 0; i < somma.rows; i++) {
         for (int j = 0; j < somma.cols; j++) {
@@ -635,7 +703,14 @@ Matrix Matrix::operator + (const Matrix& mat) {
 }
 
 Matrix Matrix::operator - (const Matrix& mat) {
-    if (rows != mat.rows || cols != mat.cols) {throw 3;}
+    try {
+        if (rows != mat.rows || cols != mat.cols)
+            throw "\033[1;31mMatrix Matrix::operator - (Matrix) -->\n\tThe matrices have different dimensions\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Matrix diff(rows, cols);
     for (int i = 0; i < diff.rows; i++) {
         for (int j = 0; j < diff.cols; j++) {
@@ -646,7 +721,14 @@ Matrix Matrix::operator - (const Matrix& mat) {
 }
 
 Matrix Matrix::operator * (const Matrix& mat) {
-    if (cols != mat.rows) {throw 3;}
+    try {
+        if (cols != mat.rows)
+            throw "\033[1;31mMatrix Matrix::operator * (Matrix) -->\n\tThe matrices have incompatible dimensions for multiplication\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Matrix prod(rows, mat.cols);
     for (int i = 0; i < rows; i++) {
         for (int k = 0; k < cols; k++) {

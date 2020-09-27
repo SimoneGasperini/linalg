@@ -53,12 +53,18 @@ double Polynomial::ComputeZero () {
     double rad = static_cast <double> (rand());
     int i = 0;
     int MAXITER = 1000;
-    while (abs(Evaluate(rad)) > APPROX) {
-        if (i > MAXITER) {
-            throw 1;
+    try {
+        while (abs(Evaluate(rad)) > APPROX) {
+            if (i > MAXITER) {
+                throw "\033[1;31mdouble Polynomial::ComputeZero () -->\n\tThe polynomial has at least one complex zero solution\033[0m\n";
+            }
+            rad -= Evaluate(rad)/EvaluateDerivative(rad);
+            i++;
         }
-        rad -= Evaluate(rad)/EvaluateDerivative(rad);
-        i++;
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
     }
     return rad;
 }
