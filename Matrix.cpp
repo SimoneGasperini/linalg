@@ -43,20 +43,18 @@ int Matrix::GetRows () {return rows;}
 int Matrix::GetCols () {return cols;}
 
 Vector Matrix::GetRowVector (int k) {
-    double* arr = new double[cols];
+    Vector row(cols);
     for (int i = 0; i < cols; i++) {
-        arr[i] = matrix[k][i];
+        row.SetElement(i, matrix[k][i]);
     }
-    Vector row(cols, arr);
     return row;
 }
 
 Vector Matrix::GetColVector (int k) {
-    double* arr = new double[rows];
+    Vector col(rows);
     for (int i = 0; i < rows; i++) {
-        arr[i] = matrix[i][k];
+        col.SetElement(i, matrix[k][i]);
     }
-    Vector col(rows, arr);
     return col;
 }
 
