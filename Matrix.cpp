@@ -1,5 +1,3 @@
-#include <cmath>
-#include <iomanip>
 #include "linalg.hpp"
 
 Matrix::Matrix (int m, int n) {

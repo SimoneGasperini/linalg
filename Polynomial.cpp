@@ -1,4 +1,3 @@
-#include <cmath>
 #include "linalg.hpp"
 
 Polynomial::Polynomial (int k) {

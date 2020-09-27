@@ -1,4 +1,3 @@
-#include <iostream>
 #include "linalg.hpp"
 using namespace std;
 

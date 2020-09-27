@@ -1,6 +1,3 @@
-#include <cmath>
-#include <algorithm>
-#include <iomanip>
 #include "linalg.hpp"
 
 Vector::Vector (int s) {
@@ -34,14 +31,6 @@ double* Vector::GetArray () {return array;}
 double Vector::GetElement (int i) {return array[i];}
 
 void Vector::SetElement (int i, double val) {array[i] = val;}
-
-void Vector::Sort (bool reverse) {
-    if (reverse) {
-        sort(array, array+size, greater<int>());
-    } else {
-        sort(array, array+size);
-    }
-}
 
 double Vector::Norm (int p) {
     double result = 0;

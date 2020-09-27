@@ -1,4 +1,3 @@
-#include <cmath>
 #include "linalg.hpp"
 
 Matrix Eye (int n) {

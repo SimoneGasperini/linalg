@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cmath>
+#include <iomanip>
 using namespace std;
 
 const double APPROX = 10e-9;
@@ -42,7 +44,6 @@ class Vector {
     double* GetArray ();
     double GetElement (int);
     void SetElement (int, double);
-    void Sort (bool reverse = false);
     double Norm (int p = 2);
     Vector Normalized (int p = 2);
     Vector ProjectedOnto (Vector);
