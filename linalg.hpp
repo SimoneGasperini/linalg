@@ -70,7 +70,6 @@ class Matrix {
     Matrix Merge (const Matrix&);
 	Matrix SwapRows ();
     Matrix GetPermutation (Matrix&);
-    void Approx ();
 
     public:
     Matrix () {};

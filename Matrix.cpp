@@ -229,16 +229,6 @@ Matrix Matrix::GetPermutation (Matrix& original) {
     return P;
 }
 
-void Matrix::Approx () {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            if (abs(matrix[i][j]) < APPROX) {
-                matrix[i][j] = 0;
-            }
-        }
-    }
-}
-
 double Matrix::Norm (char p) {
     double result;
     // maximum singular value
@@ -281,7 +271,7 @@ Matrix Matrix::T () {
 
 Matrix Matrix::I () {
     try {
-        if (abs(Determinant()) < APPROX)
+        if (Determinant() == 0)
             throw "\033[1;31mMatrix Matrix::I () -->\n\tThe matrix cannot be inverted (determinant = 0)\033[0m\n";
     }
     catch (const char* err) {
@@ -291,22 +281,19 @@ Matrix Matrix::I () {
     Matrix id = Eye(rows);
     Matrix composta = this->Merge(id);
     Matrix gauss = composta.Gauss();
-    double a, g;
     for (int i = gauss.rows-1; i > 0; i--) {
 		if (gauss.matrix[i][i] != 0) {
 			for (int q = i-1; q >= 0; q--) {
-				a = gauss.matrix[q][i];
-				g = gauss.matrix[i][i];
+                double k = gauss.matrix[q][i] / gauss.matrix[i][i];
 				for (int j = 0; j < gauss.cols; j++) {
-                    gauss.matrix[q][j] -= (gauss.matrix[i][j] / g) * a ;
+                    gauss.matrix[q][j] -= gauss.matrix[i][j] * k;
 				}
 			}
 		}
 	}
-    double q;
     for (int i = 0; i < gauss.rows; i++) {
-        q = gauss.matrix[i][i];
-		if (q != 1 && q != 0) {
+        double q = gauss.matrix[i][i];
+		if (q != 0) {
 			for (int j = 0; j < gauss.cols; j++) {
 			    gauss.matrix[i][j] /= q;
 			}
@@ -334,13 +321,7 @@ Matrix Matrix::Triu () {
 Matrix Matrix::Gauss () {
     Matrix gauss = this->SwapRows();
     for (int i = 0; i < gauss.rows-1; i++) {
-        if (gauss.matrix[i][i] == 0) {
-            if (i == gauss.rows-2) {
-                break;
-            } else {
-                continue;
-            }
-        }
+        if (gauss.matrix[i][i] == 0) continue;
 		for (int q = i+1; q < gauss.rows; q++) {
             double k = gauss.matrix[q][i] / gauss.matrix[i][i];
 			for (int j = 0; j < gauss.cols; j++) {
@@ -426,7 +407,7 @@ Matrix* Matrix::Eigendecomposition () {
     Matrix Q = Eye(this->cols);
     Matrix A = *this;
     Matrix I = Eye(A.rows);
-    for (int iter = 0; iter < 10000; iter++) {
+    for (int iter = 0; iter < 1000; iter++) {
         double shift = WilkinsonShift(A);
         A = A - (I * shift);
         Matrix* QR = A.QRdecomposition();
@@ -474,7 +455,6 @@ Matrix* Matrix::QRdecomposition () {
     Matrix Qt = Eye(rows), R = *this, H;
     for (int i = 0; i < rows; i++) {
         H = R.HouseholderReflection(i);
-        H.Approx();
         Qt = H * Qt;
         R = H * R;
     }
@@ -541,11 +521,12 @@ Matrix* Matrix::LUdecomposition (bool diag) {
     Matrix U = this->SwapRows();
     Matrix P = U.GetPermutation(*this);
     for (int i = 0; i < U.rows-1; i++) {
+        if (U.matrix[i][i] == 0) continue;
         for (int q = i+1; q < U.rows; q++) {
             double k = U.matrix[q][i] / U.matrix[i][i];
             L.matrix[q][i] = k;
             for (int j = 0; j < U.cols; j++) {
-                U.matrix[q][j] -= U.matrix[i][j] * k ;
+                U.matrix[q][j] -= U.matrix[i][j] * k;
             }
         }
     }
@@ -576,7 +557,7 @@ Matrix Matrix::HouseholderReflection(int i) {
     Vector u = x - xp;
     double dot = Dot(u,u);
     Matrix H = Eye(rows);
-    if (dot != 0) {
+    if (abs(dot) > APPROX) {
         Matrix _H = Eye(rows-i) - ( Outer(u,u) * (2./dot) );
         for (int r = 0; r < _H.rows; r++) {
             for (int c = 0; c < _H.cols; c++) {
@@ -751,6 +732,14 @@ Matrix Matrix::operator * (double k) {
 }
 
 Matrix Matrix::operator / (double k) {
+    try {
+        if (k == 0)
+            throw "\033[1;31mMatrix Matrix::operator / (double) -->\n\tDivision by zero\033[0m\n";
+    }
+    catch (const char* err) {
+        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
+        throw;
+    }
     Matrix res(rows, cols);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -761,11 +750,12 @@ Matrix Matrix::operator / (double k) {
 }
 
 bool Matrix::operator == (const Matrix& mat) {
+    double zero = APPROX*1e6;
     if (rows != mat.rows) return false;
     if (cols != mat.cols) return false;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (abs(matrix[i][j] - mat.matrix[i][j]) > APPROX) return false;
+            if (abs(matrix[i][j] - mat.matrix[i][j]) > zero) return false;
         }
     }
     return true;
