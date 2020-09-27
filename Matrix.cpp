@@ -58,39 +58,6 @@ Vector Matrix::GetColVector (int k) {
     return col;
 }
 
-<<<<<<< HEAD
-=======
-void Matrix::SetRowVector (int k, Vector row) {
-    try {
-        if (row.GetSize() != cols)
-            throw "\033[1;31mvoid Matrix::SetRowVector (int, Vector) -->\n\tThe size of the row vector and the number of matrix columns are different\033[0m\n";
-    }
-    catch (const char* err) {
-        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
-        throw;
-    }
-    double* arr = row.GetArray();
-    for (int i = 0; i < cols; i++) {
-        matrix[k][i] = arr[i];
-    }
-}
-
-void Matrix::SetColVector (int k, Vector col) {
-    try {
-        if (col.GetSize() != rows)
-            throw "\033[1;31mvoid Matrix::SetColVector (int, Vector) -->\n\tThe size of the column vector and the number of matrix rows are different\033[0m\n";
-    }
-    catch (const char* err) {
-        cout << "\n\033[1;31mEXCEPTION: \033[0m" << err;
-        throw;
-    }
-    double* arr = col.GetArray();
-    for (int i = 0; i < rows; i++) {
-        matrix[i][k] = arr[i];
-    }
-}
-
->>>>>>> 4e8f208... completed exceptions handling
 double Matrix::GetElement (int i, int j) {return matrix[i][j];}
 
 void Matrix::SetElement (int i, int j, double val) {matrix[i][j] = val;}
