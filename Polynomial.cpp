@@ -26,9 +26,9 @@ Polynomial::Polynomial (const Polynomial& pol) {
 
 Polynomial::~Polynomial () {delete coefficients;}
 
-int Polynomial::GetDegree () {return degree;}
+int Polynomial::GetDegree () const {return degree;}
 
-double* Polynomial::GetCoefficients () {return coefficients;}
+double* Polynomial::GetCoefficients () const {return coefficients;}
 
 void Polynomial::SetCoefficient (int indice, double valore) {
     coefficients[indice] = valore;

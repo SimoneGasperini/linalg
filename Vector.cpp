@@ -26,11 +26,11 @@ Vector::Vector (const Vector& vec) {
 
 Vector::~Vector () {delete array;}
 
-int Vector::GetSize () {return size;}
+int Vector::GetSize () const {return size;}
 
-double* Vector::GetArray () {return array;}
+double* Vector::GetArray () const {return array;}
 
-double Vector::GetElement (int i) {return array[i];}
+double Vector::GetElement (int i) const {return array[i];}
 
 void Vector::SetElement (int i, double val) {array[i] = val;}
 

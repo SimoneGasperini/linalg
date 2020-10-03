@@ -38,11 +38,11 @@ Matrix::Matrix (const Matrix& mat) {
 
 Matrix::~Matrix () {delete matrix;}
 
-int Matrix::GetRows () {return rows;}
+int Matrix::GetRows () const {return rows;}
 
-int Matrix::GetCols () {return cols;}
+int Matrix::GetCols () const {return cols;}
 
-Vector Matrix::GetRowVector (int k) {
+Vector Matrix::GetRowVector (int k) const {
     Vector row(cols);
     for (int i = 0; i < cols; i++) {
         row.SetElement(i, matrix[k][i]);
@@ -50,7 +50,7 @@ Vector Matrix::GetRowVector (int k) {
     return row;
 }
 
-Vector Matrix::GetColVector (int k) {
+Vector Matrix::GetColVector (int k) const {
     Vector col(rows);
     for (int i = 0; i < rows; i++) {
         col.SetElement(i, matrix[k][i]);
@@ -58,7 +58,7 @@ Vector Matrix::GetColVector (int k) {
     return col;
 }
 
-double Matrix::GetElement (int i, int j) {return matrix[i][j];}
+double Matrix::GetElement (int i, int j) const {return matrix[i][j];}
 
 void Matrix::SetElement (int i, int j, double val) {matrix[i][j] = val;}
 
