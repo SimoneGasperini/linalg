@@ -36,6 +36,8 @@ Matrix::Matrix (const Matrix& mat) {
     }
 }
 
+Matrix::~Matrix () {delete matrix;}
+
 int Matrix::GetRows () {return rows;}
 
 int Matrix::GetCols () {return cols;}

@@ -14,6 +14,7 @@ class Polynomial {
     Polynomial (int);
     Polynomial (int, double*);
     Polynomial (const Polynomial&);
+    ~Polynomial ();
     int GetDegree ();
     double* GetCoefficients ();
     void SetCoefficient (int, double);
@@ -40,6 +41,7 @@ class Vector {
     Vector (int);
     Vector (int, double*);
     Vector (const Vector&);
+    ~Vector ();
     int GetSize ();
     double* GetArray ();
     double GetElement (int);
@@ -77,6 +79,7 @@ class Matrix {
     Matrix (int, int);
     Matrix (int, int, double**);
     Matrix (const Matrix&);
+    ~Matrix ();
     int GetRows ();
     int GetCols ();
     Vector GetRowVector (int);

@@ -24,6 +24,8 @@ Polynomial::Polynomial (const Polynomial& pol) {
     }
 }
 
+Polynomial::~Polynomial () {delete coefficients;}
+
 int Polynomial::GetDegree () {return degree;}
 
 double* Polynomial::GetCoefficients () {return coefficients;}

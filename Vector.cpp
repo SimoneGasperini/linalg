@@ -24,6 +24,8 @@ Vector::Vector (const Vector& vec) {
     }
 }
 
+Vector::~Vector () {delete array;}
+
 int Vector::GetSize () {return size;}
 
 double* Vector::GetArray () {return array;}
