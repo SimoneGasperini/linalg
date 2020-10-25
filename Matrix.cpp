@@ -588,8 +588,9 @@ ostream& operator << (ostream& os, Matrix& mat) {
     for (int i = 0; i < mat.rows; i++) {
         os << "[";
         for (int j = 0; j < mat.cols; j++) {
-            os << setprecision(2) << setw(8) << mat.matrix[i][j] << ' ';
-        }    
+            double entry = abs(mat.matrix[i][j]) >= 0.005 ? mat.matrix[i][j] : 0;
+            os << setprecision(2) << setw(8) << entry << ' ';
+        }
         os << "]\n";
     }
 }

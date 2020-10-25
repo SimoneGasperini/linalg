@@ -98,11 +98,11 @@ double* Polynomial::ComputeZeros () {
 
 ostream& operator << (ostream& os, Polynomial& pol) {
     for (int k = pol.degree; k > 0; k--) {   
-        double corrente = abs(pol.coefficients[k]);
-        if (pol.coefficients[k] != 0) {
+        double abs_coeff = abs(pol.coefficients[k]) > 0.005 ? abs(pol.coefficients[k]) : 0;
+        if (abs_coeff != 0) {
             os << (pol.coefficients[k] > 0 ? '+' : '-');
-            if (corrente != 1) {
-                os << corrente;
+            if (abs_coeff != 1) {
+                os << abs_coeff;
             }
             if (k != 1) {
                 os << "x^" << k;
