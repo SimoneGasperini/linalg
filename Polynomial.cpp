@@ -55,7 +55,7 @@ double Polynomial::ComputeZero () {
     int i = 0;
     int MAXITER = 1000;
     try {
-        while (abs(Evaluate(rad)) > APPROX) {
+        while (abs(Evaluate(rad)) > ZERO) {
             if (i > MAXITER)
                 throw "\033[1;31mdouble Polynomial::ComputeZero () -->\n\tThe polynomial has at least one complex zero solution\033[0m\n";
             double val = EvaluateDerivative(rad);

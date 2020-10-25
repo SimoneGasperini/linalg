@@ -304,7 +304,7 @@ int Matrix::Rank () {
     int rank = 0;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (abs(gauss.matrix[i][j]) > APPROX) {
+            if (abs(gauss.matrix[i][j]) > ZERO) {
                 rank++;
                 break;
             }
@@ -524,7 +524,7 @@ Matrix Matrix::HouseholderReflection(int i) {
     Vector u = x - xp;
     double dot = Dot(u,u);
     Matrix H = Eye(rows);
-    if (abs(dot) > APPROX) {
+    if (abs(dot) > ZERO) {
         Matrix _H = Eye(rows-i) - ( Outer(u,u) * (2./dot) );
         for (int r = 0; r < _H.rows; r++) {
             for (int c = 0; c < _H.cols; c++) {
@@ -579,7 +579,7 @@ bool Matrix::IsPositiveDefinite () {
     if (!IsSymmetric()) return false;
     Matrix gauss = Gauss();
     for (int i = 0; i < gauss.rows; i++) {
-        if (gauss.matrix[i][i] < 0 || abs(gauss.matrix[i][i]) < APPROX) return false;
+        if (gauss.matrix[i][i] < 0 || abs(gauss.matrix[i][i]) < ZERO) return false;
     }
     return true;
 }
@@ -588,7 +588,7 @@ ostream& operator << (ostream& os, Matrix& mat) {
     for (int i = 0; i < mat.rows; i++) {
         os << "[";
         for (int j = 0; j < mat.cols; j++) {
-            os << setprecision(3) << setw(8) << mat.matrix[i][j] << ' ';
+            os << setprecision(2) << setw(8) << mat.matrix[i][j] << ' ';
         }    
         os << "]\n";
     }
@@ -717,12 +717,11 @@ Matrix Matrix::operator / (double k) {
 }
 
 bool Matrix::operator == (const Matrix& mat) {
-    double zero = APPROX*1e6;
     if (rows != mat.rows) return false;
     if (cols != mat.cols) return false;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (abs(matrix[i][j] - mat.matrix[i][j]) > zero) return false;
+            if (abs(matrix[i][j] - mat.matrix[i][j]) > ZERO) return false;
         }
     }
     return true;

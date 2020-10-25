@@ -57,7 +57,7 @@ Vector Vector::ProjectedOnto (Vector vec) {
 ostream& operator << (ostream& os, Vector& vec) {
     os << "[";
     for (int i = 0; i < vec.size; i++) {
-        os << setprecision(3) << vec.array[i];
+        os << setprecision(2) << vec.array[i];
         if (i != vec.size-1) {os << "  ";}
     }
     os << "]";
@@ -147,7 +147,7 @@ Vector Vector::operator / (double k) {
 bool Vector::operator == (const Vector& vec) {
     if (size != vec.size) {return false;}
     for (int i = 0; i < size; i++) {
-        if (abs(array[i] - vec.array[i]) > APPROX) {return false;}
+        if (abs(array[i] - vec.array[i]) > ZERO) {return false;}
     }
     return true;
 }

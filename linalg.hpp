@@ -3,7 +3,7 @@
 #include <iomanip>
 using namespace std;
 
-const double APPROX = 10e-9;
+const double ZERO = 10e-9;
 
 class Polynomial {
     int degree;

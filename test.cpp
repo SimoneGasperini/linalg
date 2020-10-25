@@ -1,5 +1,4 @@
 #include "linalg.hpp"
-using namespace std;
 
 main () {
 
