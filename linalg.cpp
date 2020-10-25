@@ -1,5 +1,58 @@
 #include "linalg.hpp"
 
+double random_double (double min, double max) {
+    return min + ((double)rand()/RAND_MAX) * (max - min);
+}
+
+int random_int (int min, int max) {
+    return (int)(random_double(min, max) + 0.5);
+}
+
+Matrix Zeros (int* shape) {
+    int r = shape[0], c = shape[1];
+    Matrix zeros (r, c);
+    return zeros;
+}
+
+Matrix Ones (int* shape) {
+    int r = shape[0], c = shape[1];
+    double** mat = new double*[r];
+    for (int i = 0; i < r; i++) {
+        mat[i] = new double[c];
+        for (int j = 0; j < c; j++) {
+            mat[i][j] = 1;
+        }
+    }
+    Matrix ones (r, c, mat);
+    return ones;
+}
+
+Matrix Rand (int* shape, double low, double high) {
+    int r = shape[0], c = shape[1];
+    double** mat = new double*[r];
+    for (int i = 0; i < r; i++) {
+        mat[i] = new double[c];
+        for (int j = 0; j < c; j++) {
+            mat[i][j] = random_double(low, high);
+        }
+    }
+    Matrix rand (r, c, mat);
+    return rand;
+}
+
+Matrix RandInt (int* shape, int low, int high) {
+    int r = shape[0], c = shape[1];
+    double** mat = new double*[r];
+    for (int i = 0; i < r; i++) {
+        mat[i] = new double[c];
+        for (int j = 0; j < c; j++) {
+            mat[i][j] = (double)random_int(low, high);
+        }
+    }
+    Matrix randint (r, c, mat);
+    return randint;
+}
+
 Matrix Eye (int n) {
     Matrix id(n,n);
     for (int i = 0; i < n; i++) {

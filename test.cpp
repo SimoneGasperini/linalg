@@ -3,15 +3,9 @@
 main () {
 
     srand((unsigned int)time(NULL));
-    int r = 7, c = 5;
-    double** mat = new double*[r];
-    for (int i = 0; i < r; i++) {
-        mat[i] = new double[c];
-        for (int j = 0; j < c; j++) {
-            mat[i][j] = static_cast <double> (rand()) / static_cast <double> (RAND_MAX) * 4 - 2;
-        }
-    }
-    Matrix A (r, c, mat);
+
+    int shape[2] = {4,6};
+    Matrix A = Rand(shape, -2, 3);
     cout << "\nRectangular matrix A =\n" << A;
 
     Matrix* USV = A.SVdecomposition();
@@ -21,15 +15,10 @@ main () {
     Matrix A_again = USV[0] * USV[1] * USV[2].T();
     cout << "\nU * Sigma * V.T =\n" << A_again;
 
-    r = 8, c = 8;
-    mat = new double*[r];
-    for (int i = 0; i < r; i++) {
-        mat[i] = new double[c];
-        for (int j = 0; j < c; j++) {
-            mat[i][j] = static_cast <double> (rand()) / static_cast <double> (RAND_MAX) * 4 - 2;
-        }
-    }
-    Matrix B (r, c, mat);
+
+
+    shape[0] = 5; shape[1] = 5;
+    Matrix B = RandInt(shape, -4, 4);
     Matrix S = B.Triu() + (B.Triu()).T() - Diag(Diag(B));
     cout << "\n\n\nSymmetric matrix S =\n" << S;
 
@@ -42,23 +31,21 @@ main () {
     double det = S.Determinant();
     cout << "\nDeterminant = " << det << "\n";
 
+    Polynomial pol = S.CharacteristicPol();
+    cout << "\nCharacteristic polynomial = " << pol << "\n";
+
     Matrix* QL = S.Eigendecomposition();
     cout << "\nQ =\n" << QL[0];
     cout << "\nLambda =\n" << QL[1];
     Matrix S_again = QL[0] * QL[1] * QL[0].T();
     cout << "\nQ * Lambda * Q.T =\n" << S_again;
 
-    r = 5, c = 5;
-    mat = new double*[r];
-    for (int i = 0; i < r; i++) {
-        mat[i] = new double[c];
-        for (int j = 0; j < c; j++) {
-            mat[i][j] = static_cast <double> (rand()) / static_cast <double> (RAND_MAX) * 4 - 2;
-        }
-    }
-    mat[0][0] = 0;
-    mat[3][3] = 0;
-    Matrix C (r, c, mat);
+
+
+    shape[0] = 4; shape[1] = 4;
+    Matrix C = Rand(shape, -3, 5);
+    C.SetElement(0,0, 0);
+    C.SetElement(3,3, 0);
     cout << "\n\n\nSquare matrix C =\n" << C;
 
     Matrix* dec = C.LUdecomposition();
