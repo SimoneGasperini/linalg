@@ -1,6 +1,6 @@
 #include "linalg.hpp"
 
-main () {
+int main () {
 
     srand((unsigned int)time(NULL));
 
@@ -31,8 +31,8 @@ main () {
     double det = S.Determinant();
     cout << "\nDeterminant = " << det << "\n";
 
-    Polynomial pol = S.CharacteristicPol();
-    cout << "\nCharacteristic polynomial = " << pol << "\n";
+    Polynomial polchar = S.CharacteristicPol();
+    cout << "\nCharacteristic polynomial = " << polchar << "\n";
 
     Matrix* QL = S.Eigendecomposition();
     cout << "\nQ =\n" << QL[0];
@@ -55,4 +55,17 @@ main () {
     Matrix C_again = dec[2].T() * dec[0] * dec[1];
     cout << "\nP.T * L * U =\n" << C_again;
 
+
+
+    cout << "\n\n";
+
+    Polynomial pol(3);
+    cin >> pol;
+    cout << "Polynomial = " << pol << "\n\n";
+
+    Vector vec(5);
+    cin >> vec;
+    cout << "Vector = " << vec << "\n";
+
+    return 0;
 }
