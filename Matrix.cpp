@@ -593,6 +593,7 @@ ostream& operator << (ostream& os, Matrix& mat) {
         }
         os << "]\n";
     }
+    return os;
 }
 
 istream& operator >> (istream& is, Matrix& mat) {
@@ -618,6 +619,7 @@ istream& operator >> (istream& is, Matrix& mat) {
             clog << "\n";
         }
     }
+    return is;
 }
 
 Matrix& Matrix::operator = (const Matrix& mat) {
