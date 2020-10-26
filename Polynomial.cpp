@@ -119,18 +119,10 @@ ostream& operator << (ostream& os, Polynomial& pol) {
 }
 
 istream& operator >> (istream& is, Polynomial& pol) {
-    int n;
+    pol.coefficients = new double[pol.degree+1];
     if (cin) {
-        clog << "Digita il degree del polinomio: ";
-        is >> n;
-    }
-    if (n > pol.degree) {
-        pol.coefficients = new double[n+1];
-        pol.degree = n;
-    }
-    if (cin) {
-        clog << "Digita i " << n+1 << " coefficients del polinomio: \n";
-        for (int k = n; k >= 0; k--) { 
+        clog << "Enter the " << pol.degree+1 << " coefficients of the polynomial:\n";
+        for (int k = pol.degree; k >= 0; k--) {
             is >> pol.coefficients[k];
         }
     }

@@ -62,6 +62,18 @@ ostream& operator << (ostream& os, Vector& vec) {
         if (i != vec.size-1) {os << "  ";}
     }
     os << "]";
+    return os;
+}
+
+istream& operator >> (istream& is, Vector& vec) {
+    vec.array = new double[vec.size];
+    if (cin) {
+        clog << "Enter the " << vec.size << " components of the vector:\n";
+        for (int k = 0; k < vec.size; k++) { 
+            is >> vec.array[k];
+        }
+    }
+    return is;
 }
 
 Vector& Vector::operator = (const Vector& vec) {
