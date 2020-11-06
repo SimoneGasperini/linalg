@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.0)
+
+project(linalg)
+
+add_executable(
+    test.exe
+    test.cpp
+    linalg.cpp
+    Vector.cpp
+    Polynomial.cpp
+    Matrix.cpp
+)
