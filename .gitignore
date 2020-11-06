@@ -1,0 +1,7 @@
+makefile
+Makefile
+CMakeFiles
+*.txt
+*.out
+*.exe
+*.cmake
