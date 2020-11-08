@@ -1,7 +1,5 @@
-makefile
-Makefile
 CMakeFiles
-*.txt
+CMakeCache.txt
+Makefile
 *.out
-*.exe
 *.cmake

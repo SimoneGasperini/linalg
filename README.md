@@ -53,14 +53,14 @@ To have a more precise idea of all the available methods just have a look to the
 
 
 ## Usage
-Once the repository has been cloned, it is possible to easily build this linear algebra program (on Linux system only) using the *cmake* tool and typing:
+Once the repository has been cloned, it is possible to easily build this linear algebra program (on Linux system only) using *CMake*:
 ```bash
 cmake .
 ```
 Then, to compile and run the file *test.cpp* just type:
  ```bash
 make
-./test.exe
+./test
 ```
 
 ## References
