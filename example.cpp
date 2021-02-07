@@ -1,4 +1,4 @@
-#include "linalg.hpp"
+#include "source/hpp/linalg.hpp"
 
 int main () {
 

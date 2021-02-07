@@ -1,4 +1,4 @@
-#include "linalg.hpp"
+#include "../hpp/linalg.hpp"
 
 double random_double (double min, double max) {
     return min + ((double)rand()/RAND_MAX) * (max - min);

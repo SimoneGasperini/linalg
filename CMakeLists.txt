@@ -9,9 +9,9 @@ add_executable(
 
     example.cpp
 
-    linalg.cpp
-    Vector.cpp
-    Polynomial.cpp
-    Matrix.cpp
+    source/cpp/linalg.cpp
+    source/cpp/Vector.cpp
+    source/cpp/Polynomial.cpp
+    source/cpp/Matrix.cpp
 
 )

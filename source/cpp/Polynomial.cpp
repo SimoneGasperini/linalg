@@ -1,4 +1,4 @@
-#include "linalg.hpp"
+#include "../hpp/linalg.hpp"
 
 Polynomial::Polynomial (int k) {
     degree = k;

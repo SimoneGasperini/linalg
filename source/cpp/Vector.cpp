@@ -1,4 +1,4 @@
-#include "linalg.hpp"
+#include "../hpp/linalg.hpp"
 
 Vector::Vector (int s) {
     size = s;

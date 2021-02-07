@@ -1,4 +1,4 @@
-#include "linalg.hpp"
+#include "../hpp/linalg.hpp"
 
 Matrix::Matrix (int m, int n) {
     rows = m;
