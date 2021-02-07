@@ -2,7 +2,6 @@
 
 ## Table of contents
 - [LINear ALGebra library](#linear-algebra-library)
-  - [Table of contents](#table-of-contents)
   - [Overview](#overview)
   - [Usage](#usage)
   - [References](#references)
@@ -53,15 +52,26 @@ To have a more precise idea of all the available methods just have a look to the
 
 
 ## Usage
-Once the repository has been cloned, it is possible to easily build this linear algebra program (on Linux system only) using *CMake*:
+First of all, you have to clone the repository and change directory:
+
+```bash
+git clone https://github.com/SimoneGasperini/linalg.git
+cd linalg
+```
+
+Then, you can easily build the `linalg` library (on Linux system only) using *CMake*:
+
 ```bash
 cmake .
-```
-Then, to compile and run the file *test.cpp* just type:
- ```bash
 make
-./test
 ```
+
+Finally, you can run as an example the executable *example.out* simply typing:
+
+ ```bash
+./example.out
+```
+
 
 ## References
 This work is inspired by the MIT open course:
